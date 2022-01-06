@@ -1,5 +1,6 @@
 import React from "react";
 import "./App.css";
+
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import Home from "./Home";
@@ -32,7 +33,7 @@ const App = () => (
             <Calendar appointments={appointments} />
           </Route>
           <Route path="/day">
-            <Day appointments={appointments.filter(app => app.day === 1)} />
+            <Day appointments={appointments.filter((app) => app.day === 1)} />
           </Route>
           <Route path="/">
             <Home />

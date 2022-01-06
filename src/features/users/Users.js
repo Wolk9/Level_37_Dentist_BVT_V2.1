@@ -6,7 +6,6 @@ import {
   dentistsSelectors,
   clientsSelectors
 } from "../users/userSlice";
-import "../../App.css";
 import User from "../users/components/User";
 
 const Users = () => {
@@ -31,7 +30,7 @@ const Users = () => {
     dispatch(fetchUsers());
   }, []);
 
-  return allDentists.map((user) => <User key={user.id} user={user} />);
+  return <User title="Dentists" users={allDentists} />;
 };
 
 export default Users;
