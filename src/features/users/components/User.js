@@ -1,9 +1,18 @@
 import React from "react";
-import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
+import { setModalOpen, addUser, removeUser, editUser } from "../userSlice";
 import { Button, ButtonGroup, Panel, Table } from "rsuite";
 import "rsuite/dist/rsuite.min.css";
 
 const User = ({ users, title }) => {
+  const dispatch = useDispatch();
+  const handleOpen = () => {
+    dispatch(setModalOpen(true));
+  };
+  const handleDelete = (e) => {
+    dispatch(removeUser(e.target.id));
+  };
+
   return (
     <div>
       {" "}
@@ -48,7 +57,7 @@ const User = ({ users, title }) => {
                       size="xs"
                       color="blue"
                       appearance="primary"
-                      onClick={handleAction}
+                      onClick={handleOpen}
                     >
                       {" "}
                       Edit{" "}
@@ -57,7 +66,7 @@ const User = ({ users, title }) => {
                       size="xs"
                       color="red"
                       appearance="ghost"
-                      onClick={handleAction}
+                      onClick={handleDelete}
                     >
                       {" "}
                       Remove{" "}
@@ -73,8 +82,8 @@ const User = ({ users, title }) => {
   );
 };
 
-User.propTypes = {
-  user: PropTypes.object.isRequired
-};
+// User.propTypes = {
+//   users: PropTypes.object.isRequired
+// };
 
 export default User;
