@@ -6,16 +6,29 @@ import {
 
 const URL = "http://localhost:3002/";
 
-export const fetchUsers = createAsyncThunk(
-  "users/dentists/fetchUsers",
-  async () => {
-    const dentists = await fetch(URL + "dentists").then((res) => res.json());
-    const assistants = await fetch(URL + "assistants").then((res) =>
-      res.json()
-    );
-    const clients = await fetch(URL + "clients").then((res) => res.json());
-    console.log({ dentists, assistants, clients });
-    return { dentists, assistants, clients };
+const sleep = (ms) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+};
+
+export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
+  await sleep(20);
+  const dentists = await fetch(URL + "dentists").then((res) => res.json());
+  const assistants = await fetch(URL + "assistants").then((res) => res.json());
+  const clients = await fetch(URL + "clients").then((res) => res.json());
+  console.log({ dentists, assistants, clients });
+  return { dentists, assistants, clients };
+});
+
+export const deleteUser = createAsyncThunk(
+  "users/deleteUser",
+  async ({ id, userType }) => {
+    console.log(id, userType);
+    await fetch(URL + userType + `/` + id, {
+      method: "DELETE"
+    });
+    return id;
   }
 );
 
@@ -32,7 +45,7 @@ const dentistsAdapter = createEntityAdapter({});
 
 const initialState = userAdapter.getInitialState({
   loading: false,
-  userType: "clients",
+  userType: "assistants",
   modalOpen: false,
   assistants: assistantsAdapter.getInitialState(),
   dentists: dentistsAdapter.getInitialState(),
@@ -44,27 +57,7 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setModalOpen: (state, action) => void (state.modalOpen = action.payload),
-    setUserType: (state, action) => void (state.userType = action.payload),
-    addUser: (state, action) => void state.push(action.payload),
-    removeUser: (state, action) => {
-      const { id } = action.payload;
-      const existingUser = state.find((user) => user.id === id);
-      if (existingUser) {
-        return state.filter((user) => user.id != id);
-      }
-    },
-    editUser: (state, action) => {
-      const { id, first_name, last_name, email, gender, active } =
-        action.payload;
-      const existingUser = state.find((user) => user.id === id);
-      if (existingUser) {
-        existingUser.first_name = first_name;
-        existingUser.last_name = last_name;
-        existingUser.email = email;
-        existingUser.gender = gender;
-        existingUser.active = active;
-      }
-    }
+    setUserType: (state, action) => void (state.userType = action.payload)
   },
   extraReducers: {
     [fetchUsers.pending](state) {
@@ -79,6 +72,19 @@ export const userSlice = createSlice({
     },
     [fetchUsers.rejected](state) {
       state.loading = false;
+    },
+    [deleteUser.rejected](state) {
+      state.loading = false;
+    },
+    [deleteUser.pending](state) {
+      state.loading = true;
+    },
+    [deleteUser.fulfilled](state, { payload }) {
+      state.loading = false;
+      console.log(payload);
+      dentistsAdapter.removeOne(state, payload.id);
+      assistantsAdapter.removeOne(state, payload.id);
+      clientsAdapter.removeOne(state, payload.id);
     }
   }
 });
@@ -93,6 +99,5 @@ export const clientsSelectors = userAdapter.getSelectors(
   (state) => state.users.clients
 );
 
-export const { setModalOpen, setUserType, addUser, removeUser, editUser } =
-  userSlice.actions;
+export const { setModalOpen, setUserType } = userSlice.actions;
 export default userSlice.reducer;

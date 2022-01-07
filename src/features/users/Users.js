@@ -6,14 +6,11 @@ import {
   dentistsSelectors,
   clientsSelectors,
   setModalOpen,
-  setUserType,
-  addUser,
-  removeUser,
-  editUser
+  setUserType
 } from "../users/userSlice";
 import User from "../users/components/User";
 import { Badge, Modal, Placeholder, Button, Panel, ButtonGroup } from "rsuite";
-
+console.log("Users.js aangeroepen");
 const Users = () => {
   const dispatch = useDispatch();
   const totalAssistants = useSelector(assistantsSelectors.selectTotal);
@@ -24,6 +21,7 @@ const Users = () => {
   const allClients = useSelector(clientsSelectors.selectAll);
   const userType = useSelector((state) => state.users.userType);
   const modalOpen = useSelector((state) => state.users.modalOpen);
+  const isLoading = useSelector((state) => state.users.loading);
 
   console.log(modalOpen, userType);
 
@@ -52,18 +50,19 @@ const Users = () => {
           <Button onClick={handleClose} appearance="primary">
             Ok
           </Button>
-          <Button onClick={handleClose} appearance="subtle">
+          <Button onClick={handleClose} appearance="default">
             Cancel
           </Button>
         </Modal.Footer>
       </Modal>
       <Panel>
         <ButtonGroup>
-          <Badge content={totalClients}>
+          <Badge maxCount={1000} content={totalClients}>
             <Button
               onClick={handleUserTypeButton}
-              appearance={userType === "clients" ? "primary" : "subtle"}
+              appearance={userType === "clients" ? "primary" : "default"}
               value="clients"
+              loading={isLoading ? true : false}
             >
               Clients
             </Button>
@@ -71,8 +70,9 @@ const Users = () => {
           <Badge content={totalDentists}>
             <Button
               onClick={handleUserTypeButton}
-              appearance={userType === "dentists" ? "primary" : "subtle"}
+              appearance={userType === "dentists" ? "primary" : "default"}
               value="dentists"
+              loading={isLoading ? true : false}
             >
               Dentists
             </Button>
@@ -80,8 +80,9 @@ const Users = () => {
           <Badge content={totalAssistants}>
             <Button
               onClick={handleUserTypeButton}
-              appearance={userType === "assistants" ? "primary" : "subtle"}
+              appearance={userType === "assistants" ? "primary" : "default"}
               value="assistants"
+              loading={isLoading ? true : false}
             >
               Assistants
             </Button>
@@ -89,17 +90,17 @@ const Users = () => {
         </ButtonGroup>
       </Panel>
       {userType === "dentists" ? (
-        <User title="Dentists" users={allDentists} />
+        <User title="Dentists" users={allDentists} userType={userType} />
       ) : (
         <div></div>
       )}
       {userType === "assistants" ? (
-        <User title="Asssistants" users={allAssistants} />
+        <User title="Assistants" users={allAssistants} userType={userType} />
       ) : (
         <div></div>
       )}
       {userType === "clients" ? (
-        <User title="Clients" users={allClients} />
+        <User title="Clients" users={allClients} userType={userType} />
       ) : (
         <div></div>
       )}

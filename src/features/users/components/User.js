@@ -1,18 +1,25 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setModalOpen, addUser, removeUser, editUser } from "../userSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { setModalOpen, deleteUser } from "../userSlice";
 import { Button, ButtonGroup, Panel, Table } from "rsuite";
 import "rsuite/dist/rsuite.min.css";
 
 const User = ({ users, title }) => {
   const dispatch = useDispatch();
+  const userType = useSelector((state) => state.users.userType);
+
+  const onDelete = (id, userType) => {
+    console.log(id, userType);
+    dispatch(deleteUser({ id, userType }));
+  };
+
   const handleOpen = () => {
     dispatch(setModalOpen(true));
   };
-  const handleDelete = (e) => {
-    dispatch(removeUser(e.target.id));
-  };
-
+  // const handleDelete = (e) => {
+  //   dispatch(deleteAssistant(e.target.id));
+  // };
+  let count = 0;
   return (
     <div>
       {" "}
@@ -20,9 +27,9 @@ const User = ({ users, title }) => {
         <Table
           height={400}
           data={users}
-          onRowClick={(data) => {
-            console.log(data);
-          }}
+          // onRowClick={(data) => {
+          //   console.log(data);
+          // }}
         >
           <Table.Column width={200} fixed>
             <Table.HeaderCell>First Name</Table.HeaderCell>
@@ -48,9 +55,11 @@ const User = ({ users, title }) => {
 
             <Table.Cell>
               {(rowData) => {
-                function handleAction() {
-                  alert(`id:${rowData.id}`);
-                }
+                count++;
+                console.log(count);
+                // function handleAction() {
+                //   alert(`id:${rowData.id}`);
+                // }
                 return (
                   <ButtonGroup>
                     <Button
@@ -66,7 +75,7 @@ const User = ({ users, title }) => {
                       size="xs"
                       color="red"
                       appearance="ghost"
-                      onClick={handleDelete}
+                      onClick={() => onDelete(rowData.id, userType)}
                     >
                       {" "}
                       Remove{" "}
