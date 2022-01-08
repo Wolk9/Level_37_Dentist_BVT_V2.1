@@ -1,26 +1,29 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { v4 as uuidv4 } from "uuid";
 import {
   fetchUsers,
   assistantsSelectors,
   dentistsSelectors,
   clientsSelectors,
-  setEditModalOpen,
-  setAddModalOpen,
-  setUserType,
   deleteUser,
+  addUser,
   setLoading
 } from "../users/userSlice";
+import { setEditModalOpen, setAddModalOpen, setUserType } from "../ui/uiSlice";
 import User from "../users/components/User";
 import {
   Badge,
   Modal,
   Placeholder,
   Button,
+  Divider,
   Panel,
-  ButtonGroup,
+  Stack,
   Form,
-  SelectPicker
+  DatePicker,
+  Radio,
+  RadioGroup
 } from "rsuite";
 console.log("Users.js aangeroepen");
 const Users = () => {
@@ -32,10 +35,23 @@ const Users = () => {
   const totalClients = useSelector(clientsSelectors.selectTotal);
   const allClients = useSelector(clientsSelectors.selectAll);
   const totalUsers = totalAssistants + totalDentists + totalClients;
-  const userType = useSelector((state) => state.users.userType);
-  const editModalOpen = useSelector((state) => state.users.editModalOpen);
-  const addModalOpen = useSelector((state) => state.users.addModalOpen);
+  const userType = useSelector((state) => state.ui.userType);
+  const editModalOpen = useSelector((state) => state.ui.editModalOpen);
+  const addModalOpen = useSelector((state) => state.ui.addModalOpen);
   const isLoading = useSelector((state) => state.users.loading);
+
+  const initFormValue = {
+    first_name: "",
+    last_name: "",
+    email: "",
+    gender: "",
+    active: false,
+    dob: new Date(),
+    userType: "clients"
+  };
+
+  //Hooks
+  const [formValue, setFormValue] = React.useState(initFormValue);
 
   console.log(editModalOpen, userType);
 
@@ -44,18 +60,16 @@ const Users = () => {
     dispatch(setLoading(true));
   }, [totalUsers]);
 
-  const [formValue, setFormValue] = React.useState({
-    first_name: "",
-    last_name: "",
-    email: "",
-    gender: "",
-    active: false
-  });
-
   const handleCloseAddModal = () => {
     dispatch(setAddModalOpen(false));
   };
+  const handleConfirmAddModal = () => {
+    dispatch(setAddModalOpen(false));
+    console.log(userType, formValue);
+    onAdd(userType, formValue);
+  };
   const handleOpenAddModal = () => {
+    console.log(userType, formValue);
     dispatch(setAddModalOpen(true));
   };
 
@@ -65,6 +79,28 @@ const Users = () => {
   const handleEditModalClose = () => {
     dispatch(setEditModalOpen(false));
   };
+
+  const handleUserTypeRadio = (value) => {
+    dispatch(setUserType(value));
+  };
+
+  const handleFormChange = (value, e) => {
+    console.log(value, e.target.name);
+    const { name } = e.target;
+    if (name === "dob") {
+      console.log("ja!");
+      JSON.stringify(value.toDateString());
+    }
+    const uuid = uuidv4();
+    setFormValue((previousValue) => {
+      return {
+        ...previousValue,
+        id: uuid,
+        [name]: value
+      };
+    });
+  };
+
   //const handleAction = () => {};
 
   const onDelete = useCallback((id, userType) => {
@@ -72,13 +108,25 @@ const Users = () => {
     dispatch(deleteUser({ id, userType }));
   }, []);
 
+  const onAdd = useCallback((userType, formValue) => {
+    console.log(userType, formValue);
+    dispatch(addUser({ userType, formValue }));
+  });
+
   //const userTypes = [Client, Assistant, Dentist];
 
   return (
     <div>
       <Modal open={addModalOpen} onClose={handleCloseAddModal} size="xs">
         <Modal.Header>
-          <Modal.Title>New User</Modal.Title>
+          <Modal.Title>
+            New{" "}
+            {userType === "clients"
+              ? "Client"
+              : userType === "assistants"
+              ? "Assistant"
+              : "Dentist"}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form fluid onChange={setFormValue} formValue={formValue}>
@@ -92,23 +140,46 @@ const Users = () => {
               <Form.Control name="last_name" />
               <Form.HelpText>Required</Form.HelpText>
             </Form.Group>
+            <Form.Group controlId="dob">
+              <Form.ControlLabel>Date of birth</Form.ControlLabel>
+              <Form.Control
+                isoWeek
+                format="dd-MM-yyyy"
+                placement="auto"
+                name="dob"
+                accepter={DatePicker}
+                onChange={handleFormChange}
+              />
+            </Form.Group>
+            <Form.Group controlId="gender">
+              <Form.ControlLabel>Gender</Form.ControlLabel>
+              <RadioGroup
+                name="gender"
+                inline
+                appearance="picker"
+                defaultValue="male"
+                onChange={handleFormChange}
+              >
+                <Radio value="male" name="gender">
+                  male
+                </Radio>
+                <Radio value="female" name="gender">
+                  female
+                </Radio>
+                <Radio value="other" name="gender">
+                  other
+                </Radio>
+              </RadioGroup>
+            </Form.Group>
             <Form.Group controlId="email">
               <Form.ControlLabel>Email</Form.ControlLabel>
               <Form.Control name="email" type="email" />
               <Form.HelpText>Required</Form.HelpText>
             </Form.Group>
-            <Form.Group controlId="userType">
-              <Form.ControlLabel>Select UserType</Form.ControlLabel>
-              <Form.Control
-                name="select"
-                // data={userTypes}
-                // accepter={SelectPicker}
-              />
-            </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={handleCloseAddModal} appearance="primary">
+          <Button onClick={handleConfirmAddModal} appearance="primary">
             Confirm
           </Button>
           <Button onClick={handleCloseAddModal} appearance="subtle">
@@ -135,7 +206,7 @@ const Users = () => {
       </Modal>
 
       <Panel>
-        <ButtonGroup>
+        <Stack divider={<Divider vertical />}>
           <Badge maxCount={1000} content={totalClients}>
             <Button
               onClick={handleUserTypeButton}
@@ -166,10 +237,7 @@ const Users = () => {
               Assistants
             </Button>
           </Badge>
-        </ButtonGroup>
-        <ButtonGroup>
-          <Button onClick={handleOpenAddModal}>New User</Button>
-        </ButtonGroup>
+        </Stack>
       </Panel>
       {userType === "dentists" ? (
         <User
@@ -177,6 +245,7 @@ const Users = () => {
           users={allDentists}
           userType={userType}
           onDelete={onDelete}
+          handleOpenAddModal={handleOpenAddModal}
         />
       ) : (
         <div></div>
@@ -187,6 +256,7 @@ const Users = () => {
           users={allAssistants}
           userType={userType}
           onDelete={onDelete}
+          handleOpenAddModal={handleOpenAddModal}
         />
       ) : (
         <div></div>
@@ -197,6 +267,7 @@ const Users = () => {
           users={allClients}
           userType={userType}
           onDelete={onDelete}
+          handleOpenAddModal={handleOpenAddModal}
         />
       ) : (
         <div></div>
@@ -205,4 +276,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default memo(Users);

@@ -35,10 +35,13 @@ export const deleteUser = createAsyncThunk(
 
 export const addUser = createAsyncThunk(
   "users/addUser",
-  async ({ id, userType }) => {
-    await fetch(URL + userType + `/` + id, {
-      method: "POST"
+  async ({ userType, formValue }) => {
+    await fetch(URL + userType, {
+      method: "POST",
+      body: formValue,
+      redirect: "follow"
     });
+    return { userType, formValue };
   }
 );
 
@@ -55,9 +58,7 @@ const dentistsAdapter = createEntityAdapter({});
 
 const initialState = userAdapter.getInitialState({
   loading: false,
-  userType: "assistants",
-  editModalOpen: false,
-  addModalOpen: false,
+
   assistants: assistantsAdapter.getInitialState(),
   dentists: dentistsAdapter.getInitialState(),
   clients: clientsAdapter.getInitialState()
@@ -67,11 +68,6 @@ export const userSlice = createSlice({
   name: "users",
   initialState,
   reducers: {
-    setEditModalOpen: (state, action) =>
-      void (state.editModalOpen = action.payload),
-    setAddModalOpen: (state, action) =>
-      void (state.addModalOpen = action.payload),
-    setUserType: (state, action) => void (state.userType = action.payload),
     setLoading: (state, action) => void (state.loading = action.payload),
     clientsAddOne: clientsAdapter.addOne,
     dentistsAddOne: dentistsAdapter.addOne,
@@ -110,7 +106,7 @@ export const userSlice = createSlice({
     [addUser.pending](state) {
       state.loading = true;
     },
-    [addUser.fulfilled](state, { payload }) {
+    [addUser.fulfilled](state, payload) {
       state.loading = false;
       switch (payload.type) {
         case "clients":
@@ -140,9 +136,6 @@ export const clientsSelectors = userAdapter.getSelectors(
 );
 
 export const {
-  setEditModalOpen,
-  setAddModalOpen,
-  setUserType,
   setLoading,
   clientsAddOne,
   dentistsAddOne,

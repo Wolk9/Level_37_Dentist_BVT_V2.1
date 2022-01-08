@@ -1,0 +1,6 @@
+0000000000000000000000000000000000000000 20668da67c9308e0547b06bac4c1e32ba5cc75fd Wolk9 <info@setisbew.nl> 1640691262 +0100	clone: from https://github.com/WincAcademy/dentist_react
+20668da67c9308e0547b06bac4c1e32ba5cc75fd 117e995587f4228ab1f4405bfd1e72a6c9c6c8a2 Wolk9 <info@setisbew.nl> 1641399975 +0100	commit: reducers + createIdentityAdapters
+117e995587f4228ab1f4405bfd1e72a6c9c6c8a2 3da5c5078be1e21f70a7e5cdaae7eccea6dadc4a Wolk9 <info@setisbew.nl> 1641470989 +0100	commit: userReducer is now working just fine
+3da5c5078be1e21f70a7e5cdaae7eccea6dadc4a 0f6b7fac09fe6065591bb98389714aae0706e24b Wolk9 <info@setisbew.nl> 1641476136 +0100	commit: User GUI with rSuite not working
+0f6b7fac09fe6065591bb98389714aae0706e24b 756d9c4687e8ca0947b255f1d556433d5603a3de Wolk9 <info@setisbew.nl> 1641479498 +0100	commit (merge): changes beforme merge
+756d9c4687e8ca0947b255f1d556433d5603a3de 3da5c5078be1e21f70a7e5cdaae7eccea6dadc4a Wolk9 <info@setisbew.nl> 1641479543 +0100	reset: moving to 3da5c5078be1e21f70a7e5cdaae7eccea6dadc4a

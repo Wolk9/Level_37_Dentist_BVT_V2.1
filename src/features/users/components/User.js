@@ -1,13 +1,12 @@
-import React from "react";
+import React, { memo } from "react";
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
-import { setEditModalOpen } from "../userSlice";
-import { Button, ButtonGroup, Panel, Table } from "rsuite";
-import "rsuite/dist/rsuite.min.css";
+import { setEditModalOpen } from "../../ui/uiSlice";
+import { Button, ButtonGroup, Panel, Table, Stack, Divider } from "rsuite";
 
-const User = ({ users, title, onDelete }) => {
+const User = ({ users, title, onDelete, handleOpenAddModal }) => {
   const dispatch = useDispatch();
-  const userType = useSelector((state) => state.users.userType);
+  const userType = useSelector((state) => state.ui.userType);
   //const allClients = useSelector(clientsSelectors.selectAll);
 
   const handleEditModalOpen = () => {
@@ -18,6 +17,12 @@ const User = ({ users, title, onDelete }) => {
     <div>
       {" "}
       <Panel header={<h3>{title}</h3>} bordered style={{ margin: 20 }}>
+        <Stack direction="column" alignItems="flex-end">
+          <ButtonGroup>
+            <Button onClick={handleOpenAddModal}>New User</Button>
+          </ButtonGroup>
+        </Stack>
+        <Divider />
         <Table
           height={400}
           data={users}
@@ -55,26 +60,28 @@ const User = ({ users, title, onDelete }) => {
                 //   alert(`id:${rowData.id}`);
                 // }
                 return (
-                  <ButtonGroup>
-                    <Button
-                      size="xs"
-                      color="blue"
-                      appearance="primary"
-                      onClick={handleEditModalOpen}
-                    >
-                      {" "}
-                      Edit{" "}
-                    </Button>
-                    <Button
-                      size="xs"
-                      color="red"
-                      appearance="ghost"
-                      onClick={() => onDelete(rowData.id, userType)}
-                    >
-                      {" "}
-                      Remove{" "}
-                    </Button>
-                  </ButtonGroup>
+                  <Stack justifyContent="center" alignItems="center">
+                    <ButtonGroup>
+                      <Button
+                        size="xs"
+                        color="blue"
+                        appearance="primary"
+                        onClick={handleEditModalOpen}
+                      >
+                        {" "}
+                        Edit{" "}
+                      </Button>
+                      <Button
+                        size="xs"
+                        color="red"
+                        appearance="ghost"
+                        onClick={() => onDelete(rowData.id, userType)}
+                      >
+                        {" "}
+                        Remove{" "}
+                      </Button>
+                    </ButtonGroup>
+                  </Stack>
                 );
               }}
             </Table.Cell>
@@ -90,4 +97,4 @@ User.propTypes = {
   users: PropTypes.array.isRequired
 };
 
-export default User;
+export default memo(User);
