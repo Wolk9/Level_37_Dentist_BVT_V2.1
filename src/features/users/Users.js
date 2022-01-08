@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchUsers,
@@ -6,7 +6,8 @@ import {
   dentistsSelectors,
   clientsSelectors,
   setModalOpen,
-  setUserType
+  setUserType,
+  deleteUser
 } from "../users/userSlice";
 import User from "../users/components/User";
 import { Badge, Modal, Placeholder, Button, Panel, ButtonGroup } from "rsuite";
@@ -36,6 +37,14 @@ const Users = () => {
     dispatch(setModalOpen(false));
   };
   //const handleAction = () => {};
+
+  const onDelete = useCallback(
+    (id, userType) => {
+      console.log(id, userType);
+      dispatch(deleteUser({ id, userType }));
+    },
+    [userType]
+  );
 
   return (
     <div>
@@ -90,17 +99,32 @@ const Users = () => {
         </ButtonGroup>
       </Panel>
       {userType === "dentists" ? (
-        <User title="Dentists" users={allDentists} userType={userType} />
+        <User
+          title="Dentists"
+          users={allDentists}
+          userType={userType}
+          onDelete={onDelete}
+        />
       ) : (
         <div></div>
       )}
       {userType === "assistants" ? (
-        <User title="Assistants" users={allAssistants} userType={userType} />
+        <User
+          title="Assistants"
+          users={allAssistants}
+          userType={userType}
+          onDelete={onDelete}
+        />
       ) : (
         <div></div>
       )}
       {userType === "clients" ? (
-        <User title="Clients" users={allClients} userType={userType} />
+        <User
+          title="Clients"
+          users={allClients}
+          userType={userType}
+          onDelete={onDelete}
+        />
       ) : (
         <div></div>
       )}

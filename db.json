@@ -1,24 +1,6 @@
 {
   "clients": [
     {
-      "id": "413da7e9-0119-4e3e-a9c8-86d3aedb3737",
-      "first_name": "Lauraine",
-      "last_name": "Oxbe",
-      "phone": "+86 967 642 9832",
-      "email": "loxbe6@studiopress.com",
-      "gender": "Male",
-      "active": false
-    },
-    {
-      "id": "5139f7fa-1f5a-40d4-bfd4-52723ca9f0c3",
-      "first_name": "Rowena",
-      "last_name": "Caddick",
-      "phone": "+7 683 410 7842",
-      "email": "rcaddick7@abc.net.au",
-      "gender": "Female",
-      "active": true
-    },
-    {
       "id": "f44fd2fb-070d-4bfe-a0ea-ce3e6d280107",
       "first_name": "Major",
       "last_name": "Gogie",

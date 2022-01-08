@@ -1,4 +1,5 @@
 import React, { useCallback } from "react";
+import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setModalOpen,
@@ -9,18 +10,10 @@ import {
 import { Button, ButtonGroup, Panel, Table } from "rsuite";
 import "rsuite/dist/rsuite.min.css";
 
-const User = ({ users, title }) => {
+const User = ({ users, title, onDelete }) => {
   const dispatch = useDispatch();
   const userType = useSelector((state) => state.users.userType);
   //const allClients = useSelector(clientsSelectors.selectAll);
-
-  const onDelete = useCallback(
-    (id, userType) => {
-      console.log(id, userType);
-      dispatch(deleteUser({ id, userType }));
-    },
-    [userType]
-  );
 
   const handleOpen = () => {
     dispatch(setModalOpen(true));
@@ -100,8 +93,9 @@ const User = ({ users, title }) => {
   );
 };
 
-// User.propTypes = {
-//   users: PropTypes.object.isRequired
-// };
+User.propTypes = {
+  onDelete: PropTypes.func.isRequired,
+  users: PropTypes.array.isRequired
+};
 
 export default User;
