@@ -1,12 +1,7 @@
-import React, { useCallback } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  setModalOpen,
-  deleteUser,
-  fetchUsers,
-  clientsSelectors
-} from "../userSlice";
+import { setModalOpen } from "../userSlice";
 import { Button, ButtonGroup, Panel, Table } from "rsuite";
 import "rsuite/dist/rsuite.min.css";
 
@@ -18,10 +13,7 @@ const User = ({ users, title, onDelete }) => {
   const handleOpen = () => {
     dispatch(setModalOpen(true));
   };
-  // const handleDelete = (e) => {
-  //   dispatch(deleteAssistant(e.target.id));
-  // };
-  let count = 0;
+
   return (
     <div>
       {" "}

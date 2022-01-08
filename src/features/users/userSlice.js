@@ -29,7 +29,7 @@ export const deleteUser = createAsyncThunk(
     await fetch(URL + userType + `/` + id, {
       method: "DELETE"
     });
-    return id;
+    return { id, userType };
   }
 );
 
@@ -58,7 +58,14 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setModalOpen: (state, action) => void (state.modalOpen = action.payload),
-    setUserType: (state, action) => void (state.userType = action.payload)
+    setUserType: (state, action) => void (state.userType = action.payload),
+    setLoading: (state, action) => void (state.loading = action.payload),
+    clientsAddOne: clientsAdapter.addOne,
+    dentistsAddOne: dentistsAdapter.addOne,
+    assistantsAddOne: assistantsAdapter.addOne,
+    clientsUpdate: clientsAdapter.updateOne,
+    dentistsUpdate: dentistsAdapter.updateOne,
+    assistantsUpdate: assistantsAdapter.updateOne
   },
   extraReducers: {
     [fetchUsers.pending](state) {
@@ -100,5 +107,15 @@ export const clientsSelectors = userAdapter.getSelectors(
   (state) => state.users.clients
 );
 
-export const { setModalOpen, setUserType } = userSlice.actions;
+export const {
+  setModalOpen,
+  setUserType,
+  setLoading,
+  clientsAddOne,
+  dentistsAddOne,
+  assistantsAddOne,
+  clientsUpdate,
+  dentistsUpdate,
+  assistantsUpdate
+} = userSlice.actions;
 export default userSlice.reducer;

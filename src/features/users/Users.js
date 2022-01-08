@@ -7,7 +7,8 @@ import {
   clientsSelectors,
   setModalOpen,
   setUserType,
-  deleteUser
+  deleteUser,
+  setLoading
 } from "../users/userSlice";
 import User from "../users/components/User";
 import { Badge, Modal, Placeholder, Button, Panel, ButtonGroup } from "rsuite";
@@ -20,6 +21,7 @@ const Users = () => {
   const allDentists = useSelector(dentistsSelectors.selectAll);
   const totalClients = useSelector(clientsSelectors.selectTotal);
   const allClients = useSelector(clientsSelectors.selectAll);
+  const totalUsers = totalAssistants + totalDentists + totalClients;
   const userType = useSelector((state) => state.users.userType);
   const modalOpen = useSelector((state) => state.users.modalOpen);
   const isLoading = useSelector((state) => state.users.loading);
@@ -28,7 +30,8 @@ const Users = () => {
 
   useEffect(() => {
     dispatch(fetchUsers());
-  }, []);
+    dispatch(setLoading(true));
+  }, [totalUsers]);
 
   const handleUserTypeButton = (e) => {
     dispatch(setUserType(e.target.value));
@@ -38,13 +41,10 @@ const Users = () => {
   };
   //const handleAction = () => {};
 
-  const onDelete = useCallback(
-    (id, userType) => {
-      console.log(id, userType);
-      dispatch(deleteUser({ id, userType }));
-    },
-    [userType]
-  );
+  const onDelete = useCallback((id, userType) => {
+    console.log(id, userType);
+    dispatch(deleteUser({ id, userType }));
+  }, []);
 
   return (
     <div>
