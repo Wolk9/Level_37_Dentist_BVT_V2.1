@@ -1,7 +1,8 @@
 import {
   createSlice,
   createEntityAdapter,
-  createAsyncThunk
+  createAsyncThunk,
+  current
 } from "@reduxjs/toolkit";
 
 const URL = "http://localhost:3002/";
@@ -81,10 +82,10 @@ export const userSlice = createSlice({
     },
     [deleteUser.fulfilled](state, { payload }) {
       state.loading = false;
-      console.log(payload);
-      dentistsAdapter.removeOne(state, payload.id);
-      assistantsAdapter.removeOne(state, payload.id);
-      clientsAdapter.removeOne(state, payload.id);
+      console.log(current(state), payload);
+      dentistsAdapter.removeOne(state.dentists, payload.id);
+      assistantsAdapter.removeOne(state.assistants, payload.id);
+      clientsAdapter.removeOne(state.clients, payload.id);
     }
   }
 });

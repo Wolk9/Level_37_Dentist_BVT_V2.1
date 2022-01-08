@@ -1,17 +1,26 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setModalOpen, deleteUser } from "../userSlice";
+import {
+  setModalOpen,
+  deleteUser,
+  fetchUsers,
+  clientsSelectors
+} from "../userSlice";
 import { Button, ButtonGroup, Panel, Table } from "rsuite";
 import "rsuite/dist/rsuite.min.css";
 
 const User = ({ users, title }) => {
   const dispatch = useDispatch();
   const userType = useSelector((state) => state.users.userType);
+  //const allClients = useSelector(clientsSelectors.selectAll);
 
-  const onDelete = (id, userType) => {
-    console.log(id, userType);
-    dispatch(deleteUser({ id, userType }));
-  };
+  const onDelete = useCallback(
+    (id, userType) => {
+      console.log(id, userType);
+      dispatch(deleteUser({ id, userType }));
+    },
+    [userType]
+  );
 
   const handleOpen = () => {
     dispatch(setModalOpen(true));
@@ -55,8 +64,8 @@ const User = ({ users, title }) => {
 
             <Table.Cell>
               {(rowData) => {
-                count++;
-                console.log(count);
+                //count++;
+                //console.log(count);
                 // function handleAction() {
                 //   alert(`id:${rowData.id}`);
                 // }
