@@ -33,6 +33,15 @@ export const deleteUser = createAsyncThunk(
   }
 );
 
+export const addUser = createAsyncThunk(
+  "users/addUser",
+  async ({ id, userType }) => {
+    await fetch(URL + userType + `/` + id, {
+      method: "POST"
+    });
+  }
+);
+
 //selectId: (user) => user.id
 // sortComparer: (a, b) => a.last_name.localCompare(b.last_name)
 
@@ -47,7 +56,8 @@ const dentistsAdapter = createEntityAdapter({});
 const initialState = userAdapter.getInitialState({
   loading: false,
   userType: "assistants",
-  modalOpen: false,
+  editModalOpen: false,
+  addModalOpen: false,
   assistants: assistantsAdapter.getInitialState(),
   dentists: dentistsAdapter.getInitialState(),
   clients: clientsAdapter.getInitialState()
@@ -57,7 +67,10 @@ export const userSlice = createSlice({
   name: "users",
   initialState,
   reducers: {
-    setModalOpen: (state, action) => void (state.modalOpen = action.payload),
+    setEditModalOpen: (state, action) =>
+      void (state.editModalOpen = action.payload),
+    setAddModalOpen: (state, action) =>
+      void (state.addModalOpen = action.payload),
     setUserType: (state, action) => void (state.userType = action.payload),
     setLoading: (state, action) => void (state.loading = action.payload),
     clientsAddOne: clientsAdapter.addOne,
@@ -93,6 +106,25 @@ export const userSlice = createSlice({
       dentistsAdapter.removeOne(state.dentists, payload.id);
       assistantsAdapter.removeOne(state.assistants, payload.id);
       clientsAdapter.removeOne(state.clients, payload.id);
+    },
+    [addUser.pending](state) {
+      state.loading = true;
+    },
+    [addUser.fulfilled](state, { payload }) {
+      state.loading = false;
+      switch (payload.type) {
+        case "clients":
+          clientsAdapter.addOne(state.clients, payload);
+          break;
+        case "assistants":
+          assistantsAdapter.addOne(state.assistants, payload);
+          break;
+        case "dentists":
+          dentistsAdapter.addOne(state.dentists, payload);
+          break;
+        default:
+          break;
+      }
     }
   }
 });
@@ -108,7 +140,8 @@ export const clientsSelectors = userAdapter.getSelectors(
 );
 
 export const {
-  setModalOpen,
+  setEditModalOpen,
+  setAddModalOpen,
   setUserType,
   setLoading,
   clientsAddOne,

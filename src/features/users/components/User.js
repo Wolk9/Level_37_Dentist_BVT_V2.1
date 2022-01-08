@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
-import { setModalOpen } from "../userSlice";
+import { setEditModalOpen } from "../userSlice";
 import { Button, ButtonGroup, Panel, Table } from "rsuite";
 import "rsuite/dist/rsuite.min.css";
 
@@ -10,8 +10,8 @@ const User = ({ users, title, onDelete }) => {
   const userType = useSelector((state) => state.users.userType);
   //const allClients = useSelector(clientsSelectors.selectAll);
 
-  const handleOpen = () => {
-    dispatch(setModalOpen(true));
+  const handleEditModalOpen = () => {
+    dispatch(setEditModalOpen(true));
   };
 
   return (
@@ -60,7 +60,7 @@ const User = ({ users, title, onDelete }) => {
                       size="xs"
                       color="blue"
                       appearance="primary"
-                      onClick={handleOpen}
+                      onClick={handleEditModalOpen}
                     >
                       {" "}
                       Edit{" "}
