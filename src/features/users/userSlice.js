@@ -36,12 +36,13 @@ export const deleteUser = createAsyncThunk(
 export const addUser = createAsyncThunk(
   "users/addUser",
   async ({ userType, formValue }) => {
+    console.log(formValue, formValue.first_name);
     await fetch(URL + userType, {
       method: "POST",
       body: formValue,
       redirect: "follow"
     });
-    return { userType, formValue };
+    return { userType, id: formValue.id, changes: formValue };
   }
 );
 
@@ -69,12 +70,7 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setLoading: (state, action) => void (state.loading = action.payload),
-    clientsAddOne: clientsAdapter.addOne,
-    dentistsAddOne: dentistsAdapter.addOne,
-    assistantsAddOne: assistantsAdapter.addOne,
-    clientsUpdate: clientsAdapter.updateOne,
-    dentistsUpdate: dentistsAdapter.updateOne,
-    assistantsUpdate: assistantsAdapter.updateOne
+    addUser: assistantsAdapter.addOne
   },
   extraReducers: {
     [fetchUsers.pending](state) {
@@ -102,26 +98,37 @@ export const userSlice = createSlice({
       dentistsAdapter.removeOne(state.dentists, payload.id);
       assistantsAdapter.removeOne(state.assistants, payload.id);
       clientsAdapter.removeOne(state.clients, payload.id);
-    },
-    [addUser.pending](state) {
-      state.loading = true;
-    },
-    [addUser.fulfilled](state, payload) {
-      state.loading = false;
-      switch (payload.type) {
-        case "clients":
-          clientsAdapter.addOne(state.clients, payload);
-          break;
-        case "assistants":
-          assistantsAdapter.addOne(state.assistants, payload);
-          break;
-        case "dentists":
-          dentistsAdapter.addOne(state.dentists, payload);
-          break;
-        default:
-          break;
-      }
     }
+    // [addUser.pending](state) {
+    //   state.loading = true;
+    // },
+    // [addUser.fulfilled](state, { payload }) {
+    //   state.loading = false;
+    //   console.log(payload.userType, payload, payload.id, payload.changes);
+    //   switch (payload.userType) {
+    //     case "clients":
+    //       clientsAdapter.upsertOne(state.clients, {
+    //         id: payload.id,
+    //         changes: payload.changes
+    //       });
+    //       break;
+    //     case "assistants":
+    //       console.log(state.assistants, payload.changes);
+    //       assistantsAdapter.upsertOne(state.assistants, {
+    //         id: payload.id,
+    //         changes: payload.changes
+    //       });
+    //       break;
+    //     case "dentists":
+    //       dentistsAdapter.upsertOne(state.dentists, {
+    //         id: payload.id,
+    //         changes: payload.changes
+    //       });
+    //       break;
+    //     default:
+    //       break;
+    //   }
+    // }
   }
 });
 
@@ -135,13 +142,6 @@ export const clientsSelectors = userAdapter.getSelectors(
   (state) => state.users.clients
 );
 
-export const {
-  setLoading,
-  clientsAddOne,
-  dentistsAddOne,
-  assistantsAddOne,
-  clientsUpdate,
-  dentistsUpdate,
-  assistantsUpdate
-} = userSlice.actions;
+export const { setLoading, addClient, addAssistant, addDentist } =
+  userSlice.actions;
 export default userSlice.reducer;

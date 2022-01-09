@@ -1,15 +1,6 @@
 {
   "clients": [
     {
-      "id": "8052835d-45d4-4725-a649-4b9ed7e2e376",
-      "first_name": "Laurens",
-      "last_name": "Greenrod",
-      "phone": "+81 629 775 1253",
-      "email": "lgreenrod0@yelp.com",
-      "gender": "Male",
-      "active": false
-    },
-    {
       "id": "ea44d25b-0d30-47f3-abf9-90570b7dff4c",
       "first_name": "Ruby",
       "last_name": "De Domenici",
@@ -25,15 +16,6 @@
       "phone": "+62 295 575 0002",
       "email": "lwebbe2@php.net",
       "gender": "Non-binary",
-      "active": true
-    },
-    {
-      "id": "c9a8f0ca-b1bf-4c3e-8282-37efa3258fcd",
-      "first_name": "Elwood",
-      "last_name": "Pinney",
-      "phone": "+501 117 730 5972",
-      "email": "epinney3@myspace.com",
-      "gender": "Male",
       "active": true
     },
     {
@@ -2293,9 +2275,6 @@
       "email": "mstancer1@dentistcompanybvt.com",
       "gender": "Male",
       "active": false
-    },
-    {
-      "id": "P7DPTfr"
     }
   ],
   "appts": [

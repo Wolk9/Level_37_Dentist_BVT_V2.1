@@ -10,7 +10,13 @@ import {
   addUser,
   setLoading
 } from "../users/userSlice";
-import { setEditModalOpen, setAddModalOpen, setUserType } from "../ui/uiSlice";
+import {
+  setEditModalOpen,
+  setAddModalOpen,
+  setUserType,
+  setFormValue
+} from "../ui/uiSlice";
+
 import User from "../users/components/User";
 import {
   Badge,
@@ -23,9 +29,14 @@ import {
   Form,
   DatePicker,
   Radio,
-  RadioGroup
+  RadioGroup,
+  MaskedInput
 } from "rsuite";
+
+import AddModal from "../users/components/Modal";
+
 console.log("Users.js aangeroepen");
+
 const Users = () => {
   const dispatch = useDispatch();
   const totalAssistants = useSelector(assistantsSelectors.selectTotal);
@@ -39,6 +50,7 @@ const Users = () => {
   const editModalOpen = useSelector((state) => state.ui.editModalOpen);
   const addModalOpen = useSelector((state) => state.ui.addModalOpen);
   const isLoading = useSelector((state) => state.users.loading);
+  const formValue = useSelector((state) => state.ui.formValue);
 
   const initFormValue = {
     first_name: "",
@@ -46,23 +58,19 @@ const Users = () => {
     email: "",
     gender: "",
     active: false,
-    dob: new Date(),
-    userType: "clients"
+    dob: ""
   };
 
   //Hooks
-  const [formValue, setFormValue] = React.useState(initFormValue);
+  //const [formValue, setFormValue] = React.useState(initFormValue);
 
-  console.log(editModalOpen, userType);
+  console.log(editModalOpen, userType, formValue);
 
   useEffect(() => {
     dispatch(fetchUsers());
     dispatch(setLoading(true));
   }, [totalUsers]);
 
-  const handleCloseAddModal = () => {
-    dispatch(setAddModalOpen(false));
-  };
   const handleConfirmAddModal = () => {
     dispatch(setAddModalOpen(false));
     console.log(userType, formValue);
@@ -84,24 +92,15 @@ const Users = () => {
     dispatch(setUserType(value));
   };
 
-  const handleFormChange = (value, e) => {
-    console.log(value, e.target.name);
-    const { name } = e.target;
-    if (name === "dob") {
-      console.log("ja!");
-      JSON.stringify(value.toDateString());
-    }
-    const uuid = uuidv4();
-    setFormValue((previousValue) => {
-      return {
-        ...previousValue,
-        id: uuid,
-        [name]: value
-      };
-    });
-  };
+  // if (name === "") {
+  //     console.log("nee!");
+  //     return;
+  //   } else if (name === "dob") {
+  //     console.log("ja!");
+  //     JSON.stringify(value.toDateString());
+  //   }
 
-  //const handleAction = () => {};
+  // dispatch(setFormValue(e.target.value, e.target.name));
 
   const onDelete = useCallback((id, userType) => {
     console.log(id, userType);
@@ -110,84 +109,16 @@ const Users = () => {
 
   const onAdd = useCallback((userType, formValue) => {
     console.log(userType, formValue);
-    dispatch(addUser({ userType, formValue }));
+    let id;
+    if (formValue.id) {
+      id = uuidv4();
+    } else id = formValue.id;
+    dispatch(addUser({ formValue, userType }));
   });
-
-  //const userTypes = [Client, Assistant, Dentist];
 
   return (
     <div>
-      <Modal open={addModalOpen} onClose={handleCloseAddModal} size="xs">
-        <Modal.Header>
-          <Modal.Title>
-            New{" "}
-            {userType === "clients"
-              ? "Client"
-              : userType === "assistants"
-              ? "Assistant"
-              : "Dentist"}
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form fluid onChange={setFormValue} formValue={formValue}>
-            <Form.Group controlId="first_name">
-              <Form.ControlLabel>First Name</Form.ControlLabel>
-              <Form.Control name="first_name" />
-              <Form.HelpText>Required</Form.HelpText>
-            </Form.Group>
-            <Form.Group controlId="last_name">
-              <Form.ControlLabel>Last Name</Form.ControlLabel>
-              <Form.Control name="last_name" />
-              <Form.HelpText>Required</Form.HelpText>
-            </Form.Group>
-            <Form.Group controlId="dob">
-              <Form.ControlLabel>Date of birth</Form.ControlLabel>
-              <Form.Control
-                isoWeek
-                format="dd-MM-yyyy"
-                placement="auto"
-                name="dob"
-                accepter={DatePicker}
-                onChange={handleFormChange}
-              />
-            </Form.Group>
-            <Form.Group controlId="gender">
-              <Form.ControlLabel>Gender</Form.ControlLabel>
-              <RadioGroup
-                name="gender"
-                inline
-                appearance="picker"
-                defaultValue="male"
-                onChange={handleFormChange}
-              >
-                <Radio value="male" name="gender">
-                  male
-                </Radio>
-                <Radio value="female" name="gender">
-                  female
-                </Radio>
-                <Radio value="other" name="gender">
-                  other
-                </Radio>
-              </RadioGroup>
-            </Form.Group>
-            <Form.Group controlId="email">
-              <Form.ControlLabel>Email</Form.ControlLabel>
-              <Form.Control name="email" type="email" />
-              <Form.HelpText>Required</Form.HelpText>
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={handleConfirmAddModal} appearance="primary">
-            Confirm
-          </Button>
-          <Button onClick={handleCloseAddModal} appearance="subtle">
-            Cancel
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
+      <AddModal addModalOpen={addModalOpen} />
       <Modal open={editModalOpen} onClose={handleEditModalClose}>
         <Modal.Header>
           <Modal.Title>Edit User</Modal.Title>
