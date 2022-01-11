@@ -45,8 +45,7 @@ const Users = () => {
   const onDelete = (selectedIds) => {
     dispatch(setDeleting(true));
     console.log("onDelete", selectedIds, userType);
-    dispatch(deleteUser({ selectedIds, userType });
-    });
+    dispatch(deleteUser({ selectedIds, userType }));
   };
 
   console.log(editModalOpen, userType);

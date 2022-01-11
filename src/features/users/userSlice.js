@@ -27,9 +27,12 @@ export const deleteUser = createAsyncThunk(
   async ({ id, userType }) => {
     console.log(id, userType);
 
-    userType.forEach( async (id)=> await fetch(URL + userType + `/` + id, {
-      method: "DELETE"
-    });
+    id.forEach(
+      async (id) =>
+        await fetch(URL + userType + `/` + id, {
+          method: "DELETE"
+        })
+    );
     return { id, userType };
   }
 );
