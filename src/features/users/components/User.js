@@ -230,6 +230,19 @@ const User = ({ users, title, onDelete, handleOpenAddModal, totalNumber }) => {
     dispatch(setSelected([]));
   };
 
+  users.forEach((row) => {
+    Object.keys(row).map((key) => {
+      console.log(key, typeof row[key]);
+      console.log(typeof row[key] === "string");
+
+      if (typeof row[key] !== "string") {
+        console.log(`${key} is an object with value ${row[key]}`);
+        console.log(`BBBBAAAAAAAADDDDDDDDDDD`);
+      }
+      console.log(`ROW  ${JSON.stringify(row, null, 2)}`);
+    });
+  });
+
   const handleClick = (event, name) => {
     const selectedIndex = selected.indexOf(name);
     let newSelected = [];
