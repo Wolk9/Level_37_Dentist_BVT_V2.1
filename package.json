@@ -6,6 +6,7 @@
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
     "@mui/icons-material": "^5.2.5",
+    "@mui/lab": "^5.0.0-alpha.64",
     "@mui/material": "^5.2.7",
     "@mui/styled-engine-sc": "^5.1.0",
     "@reduxjs/toolkit": "^1.7.1",
@@ -21,7 +22,8 @@
     "react-scripts": "3.4.1",
     "rsuite": "^5.4.4",
     "styled-components": "^5.3.3",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "yup": "^0.32.11"
   },
   "scripts": {
     "start": "react-scripts start",

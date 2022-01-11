@@ -26,7 +26,8 @@ export const deleteUser = createAsyncThunk(
   "users/deleteUser",
   async ({ id, userType }) => {
     console.log(id, userType);
-    await fetch(URL + userType + `/` + id, {
+
+    userType.forEach( async (id)=> await fetch(URL + userType + `/` + id, {
       method: "DELETE"
     });
     return { id, userType };
@@ -59,7 +60,7 @@ const dentistsAdapter = createEntityAdapter({});
 
 const initialState = userAdapter.getInitialState({
   loading: false,
-
+  deleting: false,
   assistants: assistantsAdapter.getInitialState(),
   dentists: dentistsAdapter.getInitialState(),
   clients: clientsAdapter.getInitialState()
@@ -70,6 +71,7 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setLoading: (state, action) => void (state.loading = action.payload),
+    setDeleting: (state, action) => void (state.deleting = action.payload),
     addUser: assistantsAdapter.addOne
   },
   extraReducers: {
@@ -86,18 +88,21 @@ export const userSlice = createSlice({
     [fetchUsers.rejected](state) {
       state.loading = false;
     },
-    [deleteUser.rejected](state) {
-      state.loading = false;
-    },
+
     [deleteUser.pending](state) {
       state.loading = true;
+      state.deleting = true;
     },
     [deleteUser.fulfilled](state, { payload }) {
       state.loading = false;
       console.log(current(state), payload);
-      dentistsAdapter.removeOne(state.dentists, payload.id);
-      assistantsAdapter.removeOne(state.assistants, payload.id);
-      clientsAdapter.removeOne(state.clients, payload.id);
+      dentistsAdapter.removeMany(state.dentists, payload.id);
+      assistantsAdapter.removeMany(state.assistants, payload.id);
+      clientsAdapter.removeMany(state.clients, payload.id);
+    },
+    [deleteUser.rejected](state) {
+      state.loading = false;
+      state.deleting = false;
     }
     // [addUser.pending](state) {
     //   state.loading = true;
@@ -142,6 +147,6 @@ export const clientsSelectors = userAdapter.getSelectors(
   (state) => state.users.clients
 );
 
-export const { setLoading, addClient, addAssistant, addDentist } =
+export const { setLoading, setDeleting, addClient, addAssistant, addDentist } =
   userSlice.actions;
 export default userSlice.reducer;
