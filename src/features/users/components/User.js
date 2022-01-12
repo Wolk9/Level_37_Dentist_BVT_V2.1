@@ -14,6 +14,7 @@ import {
   Box,
   Checkbox,
   IconButton,
+  Grid,
   Paper,
   Table,
   TableBody,
@@ -31,6 +32,7 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { visuallyHidden } from "@mui/utils";
 import { alpha } from "@mui/material/styles";
 
@@ -149,7 +151,14 @@ EnhancedTableHead.propTypes = {
 };
 
 const EnhancedTableToolbar = (props) => {
-  const { numSelected, title, onDelete, selected } = props;
+  const {
+    numSelected,
+    title,
+    onDelete,
+    selected,
+    handleOpenAddModal,
+    onFilterList
+  } = props;
 
   return (
     <Toolbar
@@ -192,11 +201,23 @@ const EnhancedTableToolbar = (props) => {
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
+        <Grid
+          container
+          direction="row"
+          justifyContent="right"
+          alignItems="center"
+        >
+          <Tooltip title="Add User">
+            <IconButton onClick={() => handleOpenAddModal(selected)}>
+              <PersonAddIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Filter list">
+            <IconButton onClick={() => onFilterList(selected)}>
+              <FilterListIcon />
+            </IconButton>
+          </Tooltip>
+        </Grid>
       )}
     </Toolbar>
   );
@@ -206,7 +227,14 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired
 };
 
-const User = ({ users, title, onDelete, handleOpenAddModal, totalNumber }) => {
+const User = ({
+  users,
+  title,
+  onDelete,
+  handleOpenAddModal,
+  totalNumber,
+  onFilterList
+}) => {
   const dispatch = useDispatch();
   const userType = useSelector((state) => state.ui.userType);
   const page = useSelector((state) => state.ui.page);
@@ -285,6 +313,8 @@ const User = ({ users, title, onDelete, handleOpenAddModal, totalNumber }) => {
           title={title}
           onDelete={onDelete}
           selected={selected}
+          onFilterList={onFilterList}
+          handleOpenAddModal={handleOpenAddModal}
         />
         <TableContainer>
           <Table

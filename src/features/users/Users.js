@@ -42,6 +42,10 @@ const Users = () => {
     console.log("handleOpenAddModal");
   };
 
+  const onFilterList = () => {
+    console.log("onFilterList");
+  };
+
   const onDelete = (selectedIds) => {
     dispatch(setDeleting(true));
     console.log("onDelete", selectedIds, userType);
@@ -96,6 +100,7 @@ const Users = () => {
           onDelete={onDelete}
           handleOpenAddModal={handleOpenAddModal}
           totalNumber={totalClients}
+          onFilterList={onFilterList}
         />
       ) : userType === "dentists" ? (
         <User
@@ -104,6 +109,7 @@ const Users = () => {
           onDelete={onDelete}
           handleOpenAddModal={handleOpenAddModal}
           totalNumber={totalDentists}
+          onFilterList={onFilterList}
         />
       ) : (
         <User
@@ -112,6 +118,7 @@ const Users = () => {
           onDelete={onDelete}
           handleOpenAddModal={handleOpenAddModal}
           totalNumber={totalAssistants}
+          onFilterList={onFilterList}
         />
       )}
     </div>
