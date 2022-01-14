@@ -40,7 +40,7 @@ const validate = (values) => {
 };
 
 export default (props) => {
-  const { handleCloseModal, open, handleConfirmAddModal, handleFormChange } =
+  const { handleCloseModal, open, handleConfirmEditModal, handleFormChange } =
     props;
   const dispatch = useDispatch();
   const userType = useSelector((state) => state.ui.userType);
@@ -73,7 +73,7 @@ export default (props) => {
       >
         <Box sx={modalStyle}>
           <div>
-            <h2 id="modal-title">Add {userType}</h2>
+            <h2 id="modal-title">Edit {userType}</h2>
             <FormControl fullWidth color="primary">
               <TextField
                 sx={{ mt: 4 }}
@@ -81,7 +81,7 @@ export default (props) => {
                 label="First Name"
                 variant="outlined"
                 helperText="required"
-                placeholder="First Name"
+                value={formValue.first_name}
                 onChange={handleFormChange}
               >
                 First Name
@@ -93,6 +93,7 @@ export default (props) => {
                 variant="outlined"
                 helperText="required"
                 placeholder="Last Name"
+                value={formValue.last_name}
                 onChange={handleFormChange}
               >
                 Last Name
@@ -103,7 +104,7 @@ export default (props) => {
                 label="Email"
                 variant="outlined"
                 helperText="We shall never share your email"
-                placeholder="Email"
+                value={formValue.email}
                 onChange={handleFormChange}
               >
                 Email address
@@ -113,7 +114,7 @@ export default (props) => {
                 id="phone"
                 label="Phone"
                 variant="outlined"
-                placeholder="Phonenumber"
+                value={formValue.phone}
                 onChange={handleFormChange}
               >
                 Email address
@@ -124,7 +125,7 @@ export default (props) => {
                     id="dob"
                     label="Date of Birth"
                     inputFormat="DD/MM/YYYY"
-                    placeholder="13/07/1970"
+                    value={formValue.dob}
                     onChange={(date) => {
                       console.log(date);
                       if (date === null) {
@@ -149,7 +150,7 @@ export default (props) => {
                     row
                     aria-label="gender"
                     appearance="picker"
-                    defaultValue="male"
+                    defaultValue={formValue.gender}
                     onChange={handleFormChange}
                   >
                     <FormControlLabel
@@ -177,7 +178,7 @@ export default (props) => {
             <Grid container direction="row" justifyContent="flex-end">
               <Grid item>
                 <ButtonGroup>
-                  <Button onClick={handleConfirmAddModal} variant="contained">
+                  <Button onClick={handleConfirmEditModal} variant="contained">
                     Confirm
                   </Button>
                   <Button onClick={handleCloseModal} variant="outlined">

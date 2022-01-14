@@ -2,6 +2,7 @@ import React, { useEffect, memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import User from "../users/components/User";
 import AddModal from "./components/AddModal";
+import EditModal from "./components/EditModal";
 import { Backdrop, Badge, Button, CircularProgress } from "@mui/material";
 import {
   setEditModalOpen,
@@ -38,6 +39,7 @@ const Users = () => {
   const addModalOpen = useSelector((state) => state.ui.addModalOpen);
   const isLoading = useSelector((state) => state.users.loading);
   const formValue = useSelector((state) => state.ui.formValue);
+  const selected = useSelector((state) => state.ui.selected);
 
   const handleUserType = (e) => {
     dispatch(setUserType(e.target.value));
@@ -45,11 +47,80 @@ const Users = () => {
     dispatch(setSelected([]));
   };
 
-  const handleOpenAddModal = (selectIds) => {
+  const handleOpenAddModal = () => {
     dispatch(setAddModalOpen(true));
   };
-  const handleCloseAddModal = () => {
+
+  const handleOpenEditModal = () => {
+    let selectedUserValues = {};
+    switch (userType) {
+      case "clients":
+        selectedUserValues = allClients.find(
+          (client) => client.id === selected[0]
+        );
+        console.log("clients", selectedUserValues);
+        dispatch(
+          setFormValue({
+            ...formValue,
+            id: selectedUserValues.id,
+            first_name: selectedUserValues.first_name,
+            last_name: selectedUserValues.last_name,
+            email: selectedUserValues.email,
+            phone: selectedUserValues.phone,
+            dob: selectedUserValues.dob,
+            gender: selectedUserValues.gender,
+            availability: selectedUserValues.availability
+          })
+        );
+        dispatch(setEditModalOpen(true));
+        break;
+      case "assistants":
+        selectedUserValues = allAssistants.find(
+          (assistants) => assistants.id === selected[0]
+        );
+        console.log("asistants", selectedUserValues);
+        dispatch(
+          setFormValue({
+            ...formValue,
+            id: selectedUserValues.id,
+            first_name: selectedUserValues.first_name,
+            last_name: selectedUserValues.last_name,
+            email: selectedUserValues.email,
+            phone: selectedUserValues.phone,
+            dob: selectedUserValues.dob,
+            gender: selectedUserValues.gender,
+            availability: selectedUserValues.availability
+          })
+        );
+        dispatch(setEditModalOpen(true));
+        break;
+      case "dentists":
+        selectedUserValues = allDentists.find(
+          (dentists) => dentists.id === selected[0]
+        );
+        console.log("dentists", selectedUserValues);
+        dispatch(
+          setFormValue({
+            ...formValue,
+            id: selectedUserValues.id,
+            first_name: selectedUserValues.first_name,
+            last_name: selectedUserValues.last_name,
+            email: selectedUserValues.email,
+            phone: selectedUserValues.phone,
+            dob: selectedUserValues.dob,
+            gender: selectedUserValues.gender,
+            availability: selectedUserValues.availability
+          })
+        );
+        dispatch(setEditModalOpen(true));
+        break;
+      default:
+        break;
+    }
+  };
+  const handleCloseModal = () => {
     dispatch(setAddModalOpen(false));
+    dispatch(setEditModalOpen(false));
   };
 
   const onFilterList = () => {
@@ -70,25 +141,88 @@ const Users = () => {
     dispatch(setFormValue({}));
   };
 
-  const handleChangeValue = (id, availability) => {
-    console.log(availability + id + userType);
-    if (availability === "yes") {
-      dispatch(
-        updateUser({
-          userType: userType,
-          id: id,
-          changes: { availability: "sick" }
-        })
-      );
-    } else if (availability === "sick") {
-      dispatch(
-        updateUser({
-          userType: userType,
-          id: id,
-          changes: { availability: "yes" }
-        })
-      );
+  const handleConfirmEditModal = () => {
+    switch (userType) {
+      case "dentists":
+        let selectedDentistValues = allDentists.find(
+          (dentist) => dentist.id === selected[0]
+        );
+        dispatch(
+          updateUser({
+            userType: userType,
+            id: selectedDentistValues.id,
+            changes: {
+              first_name: formValue.first_name,
+              last_name: formValue.last_name,
+              email: formValue.email,
+              phone: formValue.phone,
+              dob: formValue.dob,
+              gender: formValue.gender,
+              availability: formValue.availability
+            }
+          })
+        );
+        break;
+      case "assistants":
+        let selectedAssistantValues = allAssistants.find(
+          (assistant) => assistant.id === selected[0]
+        );
+        dispatch(
+          updateUser({
+            userType: userType,
+            id: selectedAssistantValues.id,
+            changes: {
+              first_name: formValue.first_name,
+              last_name: formValue.last_name,
+              email: formValue.email,
+              phone: formValue.phone,
+              dob: formValue.dob,
+              gender: formValue.gender,
+              availability: formValue.availability
+            }
+          })
+        );
+        break;
+      case "clients":
+        let selectedClientValues = allClients.find(
+          (client) => client.id === selected[0]
+        );
+        dispatch(
+          updateUser({
+            userType: userType,
+            id: selectedClientValues.id,
+            changes: {
+              first_name: formValue.first_name,
+              last_name: formValue.last_name,
+              email: formValue.email,
+              phone: formValue.phone,
+              dob: formValue.dob,
+              gender: formValue.gender,
+              availability: formValue.availability
+            }
+          })
+        );
+        break;
+      default:
+        break;
     }
+    console.log("Confirm!");
+
+    handleCloseModal();
+    dispatch(setSelected([]));
+    dispatch(setFormValue({}));
+  };
+
+  const handleChangeValue = (id, key, value) => {
+    console.log(id, key, value, userType);
+    dispatch(
+      updateUser({
+        userType: userType,
+        id: id,
+        changes: { key: "sick" }
+      })
+    );
+
     //onClick={() =>
     //          handleChangeValue(row.id, row.availability)
     //      }
@@ -124,8 +258,14 @@ const Users = () => {
     <div>
       <AddModal
         open={addModalOpen}
-        handleCloseAddModal={handleCloseAddModal}
+        handleCloseModal={handleCloseModal}
         handleConfirmAddModal={handleConfirmAddModal}
+        handleFormChange={handleFormChange}
+      />
+      <EditModal
+        open={editModalOpen}
+        handleCloseModal={handleCloseModal}
+        handleConfirmEditModal={handleConfirmEditModal}
         handleFormChange={handleFormChange}
       />
       <Backdrop open={isLoading}>
@@ -134,7 +274,7 @@ const Users = () => {
         />
       </Backdrop>
 
-      <Badge badgeContent={totalClients} max={1000} color="error">
+      <Badge badgevalue={totalClients} max={1000} color="error">
         <Button
           name="userType"
           value="clients"
@@ -145,7 +285,7 @@ const Users = () => {
           Clients
         </Button>
       </Badge>
-      <Badge badgeContent={totalDentists} color="error">
+      <Badge badgevalue={totalDentists} color="error">
         <Button
           name="userType"
           value="dentists"
@@ -156,7 +296,7 @@ const Users = () => {
           Dentists
         </Button>
       </Badge>
-      <Badge badgeContent={totalAssistants} color="error">
+      <Badge badgevalue={totalAssistants} color="error">
         <Button
           name="userType"
           value="assistants"
@@ -173,9 +313,9 @@ const Users = () => {
           users={allClients}
           onDelete={onDelete}
           handleOpenAddModal={handleOpenAddModal}
+          handleOpenEditModal={handleOpenEditModal}
           totalNumber={totalClients}
           onFilterList={onFilterList}
-          handleChangeValue={handleChangeValue}
         />
       ) : userType === "dentists" ? (
         <User
@@ -183,9 +323,9 @@ const Users = () => {
           users={allDentists}
           onDelete={onDelete}
           handleOpenAddModal={handleOpenAddModal}
+          handleOpenEditModal={handleOpenEditModal}
           totalNumber={totalDentists}
           onFilterList={onFilterList}
-          handleChangeValue={handleChangeValue}
         />
       ) : (
         <User
@@ -193,9 +333,9 @@ const Users = () => {
           users={allAssistants}
           onDelete={onDelete}
           handleOpenAddModal={handleOpenAddModal}
+          handleOpenEditModal={handleOpenEditModal}
           totalNumber={totalAssistants}
           onFilterList={onFilterList}
-          handleChangeValue={handleChangeValue}
         />
       )}
     </div>

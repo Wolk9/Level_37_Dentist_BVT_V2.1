@@ -163,7 +163,7 @@ const EnhancedTableToolbar = (props) => {
     onDelete,
     selected,
     handleOpenAddModal,
-    handleChangeValue
+    handleOpenEditModal
   } = props;
 
   return (
@@ -209,14 +209,14 @@ const EnhancedTableToolbar = (props) => {
       ) : numSelected === 1 ? (
         <Grid container direction="row" justifyContent="flex-end">
           <Grid item>
-            <Tooltip title="Update">
-              <IconButton onClick={() => handleChangeValue(selected)}>
+            <Tooltip title="Edit user">
+              <IconButton onClick={handleOpenEditModal}>
                 <EditIcon />
               </IconButton>
             </Tooltip>
           </Grid>
           <Grid item>
-            <Tooltip title="Delete">
+            <Tooltip title="Delete user">
               <IconButton onClick={() => onDelete(selected)}>
                 <DeleteIcon />
               </IconButton>
@@ -225,7 +225,7 @@ const EnhancedTableToolbar = (props) => {
         </Grid>
       ) : (
         <Tooltip title="Add User">
-          <IconButton onClick={() => handleOpenAddModal(selected)}>
+          <IconButton onClick={handleOpenAddModal}>
             <PersonAddIcon />
           </IconButton>
         </Tooltip>
@@ -244,6 +244,7 @@ const User = (props) => {
     title,
     onDelete,
     handleOpenAddModal,
+    handleOpenEditModal,
     onFilterList,
     handleChangeValue
   } = props;
@@ -314,6 +315,8 @@ const User = (props) => {
             selected={selected}
             onFilterList={onFilterList}
             handleOpenAddModal={handleOpenAddModal}
+            handleOpenEditModal={handleOpenEditModal}
+            handleChangeValue={handleChangeValue}
           />
           <TableContainer>
             <Table
