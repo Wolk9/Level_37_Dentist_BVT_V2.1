@@ -70,7 +70,7 @@ const Users = () => {
     dispatch(setFormValue({}));
   };
 
-  const changeAvailability = (id, availability) => {
+  const handleChangeValue = (id, availability) => {
     console.log(availability + id + userType);
     if (availability === "yes") {
       dispatch(
@@ -89,6 +89,9 @@ const Users = () => {
         })
       );
     }
+    //onClick={() =>
+    //          handleChangeValue(row.id, row.availability)
+    //      }
   };
 
   const handleFormChange = (e) => {
@@ -172,7 +175,7 @@ const Users = () => {
           handleOpenAddModal={handleOpenAddModal}
           totalNumber={totalClients}
           onFilterList={onFilterList}
-          changeAvailability={changeAvailability}
+          handleChangeValue={handleChangeValue}
         />
       ) : userType === "dentists" ? (
         <User
@@ -182,7 +185,7 @@ const Users = () => {
           handleOpenAddModal={handleOpenAddModal}
           totalNumber={totalDentists}
           onFilterList={onFilterList}
-          changeAvailability={changeAvailability}
+          handleChangeValue={handleChangeValue}
         />
       ) : (
         <User
@@ -192,7 +195,7 @@ const Users = () => {
           handleOpenAddModal={handleOpenAddModal}
           totalNumber={totalAssistants}
           onFilterList={onFilterList}
-          changeAvailability={changeAvailability}
+          handleChangeValue={handleChangeValue}
         />
       )}
     </div>

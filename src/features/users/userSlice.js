@@ -139,6 +139,32 @@ export const userSlice = createSlice({
     [updateUser.pending](state) {
       state.loading = true;
     },
+    [addUser.pending](state) {
+      state.loading = true;
+    },
+    [addUser.fulfilled](state, { payload }) {
+      state.loading = false;
+      console.log(payload.userType);
+      console.log(payload);
+      console.log(payload.id);
+      console.log(payload.changes);
+      switch (payload.userType) {
+        case "clients":
+          clientsAdapter.addOne(state.clients, payload.changes);
+          break;
+        case "assistants":
+          assistantsAdapter.addOne(state.assistants, payload.changes);
+          break;
+        case "dentists":
+          dentistsAdapter.addOne(state.dentists, payload.changes);
+          break;
+        default:
+          break;
+      }
+    },
+    [addUser.rejected](state) {
+      state.loading = false;
+    },
     [updateUser.fulfilled](state, { payload }) {
       state.loading = false;
       console.log(current(state));
@@ -174,32 +200,6 @@ export const userSlice = createSlice({
       }
     },
     [updateUser.rejected](state) {
-      state.loading = false;
-    },
-    [addUser.pending](state) {
-      state.loading = true;
-    },
-    [addUser.fulfilled](state, { payload }) {
-      state.loading = false;
-      console.log(payload.userType);
-      console.log(payload);
-      console.log(payload.id);
-      console.log(payload.changes);
-      switch (payload.userType) {
-        case "clients":
-          clientsAdapter.addOne(state.clients, payload.changes);
-          break;
-        case "assistants":
-          assistantsAdapter.addOne(state.assistants, payload.changes);
-          break;
-        case "dentists":
-          dentistsAdapter.addOne(state.dentists, payload.changes);
-          break;
-        default:
-          break;
-      }
-    },
-    [addUser.rejected](state) {
       state.loading = false;
     }
   }

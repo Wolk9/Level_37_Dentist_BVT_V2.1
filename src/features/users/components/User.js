@@ -14,6 +14,7 @@ import {
   Box,
   Checkbox,
   IconButton,
+  Grid,
   Paper,
   Table,
   TableBody,
@@ -32,7 +33,8 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import MaleIcon from "@mui/icons-material/Male";
 import FemaleIcon from "@mui/icons-material/Female";
 import CheckIcon from "@mui/icons-material/Check";
-import SickSharpIcon from "@mui/icons-material/SickSharp";
+import SickIcon from "@mui/icons-material/Sick";
+import EditIcon from "@mui/icons-material/Edit";
 
 import { visuallyHidden } from "@mui/utils";
 import { alpha } from "@mui/material/styles";
@@ -155,7 +157,14 @@ EnhancedTableHead.propTypes = {
 };
 
 const EnhancedTableToolbar = (props) => {
-  const { numSelected, title, onDelete, selected, handleOpenAddModal } = props;
+  const {
+    numSelected,
+    title,
+    onDelete,
+    selected,
+    handleOpenAddModal,
+    handleChangeValue
+  } = props;
 
   return (
     <Toolbar
@@ -191,12 +200,29 @@ const EnhancedTableToolbar = (props) => {
         </Typography>
       )}
 
-      {numSelected > 0 ? (
+      {numSelected > 1 ? (
         <Tooltip title="Delete">
           <IconButton onClick={() => onDelete(selected)}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>
+      ) : numSelected === 1 ? (
+        <Grid container direction="row" justifyContent="flex-end">
+          <Grid item>
+            <Tooltip title="Update">
+              <IconButton onClick={() => handleChangeValue(selected)}>
+                <EditIcon />
+              </IconButton>
+            </Tooltip>
+          </Grid>
+          <Grid item>
+            <Tooltip title="Delete">
+              <IconButton onClick={() => onDelete(selected)}>
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
+          </Grid>
+        </Grid>
       ) : (
         <Tooltip title="Add User">
           <IconButton onClick={() => handleOpenAddModal(selected)}>
@@ -219,7 +245,7 @@ const User = (props) => {
     onDelete,
     handleOpenAddModal,
     onFilterList,
-    changeAvailability
+    handleChangeValue
   } = props;
   const dispatch = useDispatch();
   const page = useSelector((state) => state.ui.page);
@@ -315,7 +341,7 @@ const User = (props) => {
                     return (
                       <TableRow
                         hover
-                        // onClick={(event) => handleClick(event, row.id)}
+                        onClick={(event) => handleClick(event, row.id)}
                         role="checkbox"
                         aria-checked={isItemSelected}
                         tabIndex={-1}
@@ -346,21 +372,9 @@ const User = (props) => {
                         </TableCell>
                         <TableCell align="left">
                           {row.availability === "sick" ? (
-                            <IconButton
-                              onClick={() =>
-                                changeAvailability(row.id, row.availability)
-                              }
-                            >
-                              <SickSharpIcon />
-                            </IconButton>
+                            <SickIcon />
                           ) : (
-                            <IconButton
-                              onClick={() =>
-                                changeAvailability(row.id, row.availability)
-                              }
-                            >
-                              <CheckIcon />
-                            </IconButton>
+                            <CheckIcon />
                           )}
                         </TableCell>
                       </TableRow>
