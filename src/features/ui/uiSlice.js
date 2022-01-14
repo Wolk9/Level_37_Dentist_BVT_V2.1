@@ -5,12 +5,13 @@ const uiAdapter = createEntityAdapter({});
 const initialState = uiAdapter.getInitialState({
   editModalOpen: false,
   addModalOpen: false,
-  userType: "assistants",
+  userType: "clients",
   page: 0,
   rowsPerPage: 10,
   order: "asc",
   orderBy: "last_name",
-  selected: []
+  selected: [],
+  formValue: {}
 });
 
 export const uiSlice = createSlice({
@@ -28,9 +29,13 @@ export const uiSlice = createSlice({
     setEditModalOpen: (state, action) =>
       void (state.editModalOpen = action.payload),
     setAddModalOpen: (state, action) =>
-      void (state.addModalOpen = action.payload)
-  },
-  extraReducers: {}
+      void (state.addModalOpen = action.payload),
+    setFormValue: (state, action) => {
+      console.log(action.payload);
+      state.formValue = action.payload;
+    },
+    extraReducers: {}
+  }
 });
 
 export const uiSelectors = uiAdapter.getSelectors((state) => state.ui);
@@ -43,7 +48,8 @@ export const {
   setOrderBy,
   setSelected,
   setEditModalOpen,
-  setAddModalOpen
+  setAddModalOpen,
+  setFormValue
 } = uiSlice.actions;
 
 export default uiSlice.reducer;

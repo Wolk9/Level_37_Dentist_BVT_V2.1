@@ -1,6 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { Modal, Panel } from "rsuite";
+
 import { setEditModalOpen, setAddModalOpen } from "../../ui/uiSlice";
 
 const AddModal = () => {

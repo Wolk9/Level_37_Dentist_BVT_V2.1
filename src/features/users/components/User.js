@@ -3,18 +3,17 @@ import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
-  setEditModalOpen,
   setPage,
   setRowsPerPage,
   setOrder,
   setSelected,
   setOrderBy
 } from "../../ui/uiSlice";
+
 import {
   Box,
   Checkbox,
   IconButton,
-  Grid,
   Paper,
   Table,
   TableBody,
@@ -26,35 +25,40 @@ import {
   TableSortLabel,
   Toolbar,
   Tooltip,
-  Typography,
-  Divider,
-  useScrollTrigger
+  Typography
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import FilterListIcon from "@mui/icons-material/FilterList";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import MaleIcon from "@mui/icons-material/Male";
+import FemaleIcon from "@mui/icons-material/Female";
+import CheckIcon from "@mui/icons-material/Check";
+import SickSharpIcon from "@mui/icons-material/SickSharp";
+
 import { visuallyHidden } from "@mui/utils";
 import { alpha } from "@mui/material/styles";
 
 const headCells = [
-  { id: "first_name", label: "First Name", minWidth: 170 },
-  { id: "last_name", label: "Last Name", minWidth: 170 },
+  { id: "first_name", label: "First Name", minWidth: 170, align: "right" },
+  { id: "last_name", label: "Last Name", minWidth: 170, align: "left" },
   {
     id: "email",
     label: "email",
     minWidth: 170
   },
+  { id: "phone", label: "Phone" },
+  { id: "dob", label: "Date of Birth", align: "right" },
+
   {
     id: "gender",
     label: "Gender",
     minWidth: 100,
-    align: "right"
+    align: "center"
   },
   {
-    id: "active",
-    label: "Actief",
+    id: "availability",
+    label: "Sick",
     minWidth: 100,
-    align: "right"
+    align: "center"
   }
 ];
 
@@ -123,7 +127,7 @@ function EnhancedTableHead(props) {
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
-              active={orderBy === headCell.id}
+              // available={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
             >
@@ -151,14 +155,7 @@ EnhancedTableHead.propTypes = {
 };
 
 const EnhancedTableToolbar = (props) => {
-  const {
-    numSelected,
-    title,
-    onDelete,
-    selected,
-    handleOpenAddModal,
-    onFilterList
-  } = props;
+  const { numSelected, title, onDelete, selected, handleOpenAddModal } = props;
 
   return (
     <Toolbar
@@ -201,23 +198,11 @@ const EnhancedTableToolbar = (props) => {
           </IconButton>
         </Tooltip>
       ) : (
-        <Grid
-          container
-          direction="row"
-          justifyContent="right"
-          alignItems="center"
-        >
-          <Tooltip title="Add User">
-            <IconButton onClick={() => handleOpenAddModal(selected)}>
-              <PersonAddIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Filter list">
-            <IconButton onClick={() => onFilterList(selected)}>
-              <FilterListIcon />
-            </IconButton>
-          </Tooltip>
-        </Grid>
+        <Tooltip title="Add User">
+          <IconButton onClick={() => handleOpenAddModal(selected)}>
+            <PersonAddIcon />
+          </IconButton>
+        </Tooltip>
       )}
     </Toolbar>
   );
@@ -227,16 +212,16 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired
 };
 
-const User = ({
-  users,
-  title,
-  onDelete,
-  handleOpenAddModal,
-  totalNumber,
-  onFilterList
-}) => {
+const User = (props) => {
+  const {
+    users,
+    title,
+    onDelete,
+    handleOpenAddModal,
+    onFilterList,
+    changeAvailability
+  } = props;
   const dispatch = useDispatch();
-  const userType = useSelector((state) => state.ui.userType);
   const page = useSelector((state) => state.ui.page);
   const rowsPerPage = useSelector((state) => state.ui.rowsPerPage);
   const order = useSelector((state) => state.ui.order);
@@ -257,19 +242,6 @@ const User = ({
     }
     dispatch(setSelected([]));
   };
-
-  users.forEach((row) => {
-    Object.keys(row).map((key) => {
-      console.log(key, typeof row[key]);
-      console.log(typeof row[key] === "string");
-
-      if (typeof row[key] !== "string") {
-        console.log(`${key} is an object with value ${row[key]}`);
-        console.log(`BBBBAAAAAAAADDDDDDDDDDD`);
-      }
-      console.log(`ROW  ${JSON.stringify(row, null, 2)}`);
-    });
-  });
 
   const handleClick = (event, name) => {
     const selectedIndex = selected.indexOf(name);
@@ -306,90 +278,118 @@ const User = ({
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0;
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <Paper sx={{ width: "100%", mb: 2 }}>
-        <EnhancedTableToolbar
-          numSelected={selected.length}
-          title={title}
-          onDelete={onDelete}
-          selected={selected}
-          onFilterList={onFilterList}
-          handleOpenAddModal={handleOpenAddModal}
-        />
-        <TableContainer>
-          <Table
-            sx={{ minWidth: 750 }}
-            aria-labelledby="tableTitle"
-            size="small"
-          >
-            <EnhancedTableHead
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
-              onRequestSort={handleRequestSort}
-              rowCount={users.length}
-            />
-            <TableBody>
-              {/* if you don't need to support IE11, you can replace the `stableSort` call with:
+    <div>
+      <Box sx={{ width: "100%", borderRadius: "10px" }}>
+        <Paper sx={{ width: "100%", mb: 2, borderRadius: "10px" }}>
+          <EnhancedTableToolbar
+            numSelected={selected.length}
+            title={title}
+            onDelete={onDelete}
+            selected={selected}
+            onFilterList={onFilterList}
+            handleOpenAddModal={handleOpenAddModal}
+          />
+          <TableContainer>
+            <Table
+              sx={{ minWidth: 750 }}
+              aria-labelledby="tableTitle"
+              size="small"
+            >
+              <EnhancedTableHead
+                numSelected={selected.length}
+                order={order}
+                orderBy={orderBy}
+                onSelectAllClick={handleSelectAllClick}
+                onRequestSort={handleRequestSort}
+                rowCount={users.length}
+              />
+              <TableBody>
+                {/* if you don't need to support IE11, you can replace the `stableSort` call with:
                  rows.slice().sort(getComparator(order, orderBy)) */}
-              {stableSort(users, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  const isItemSelected = isSelected(row.id);
-                  const labelId = `enhanced-table-checkbox-${index}`;
+                {stableSort(users, getComparator(order, orderBy))
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row, index) => {
+                    const isItemSelected = isSelected(row.id);
+                    const labelId = `enhanced-table-checkbox-${index}`;
 
-                  return (
-                    <TableRow
-                      hover
-                      // onClick={(event) => handleClick(event, row.id)}
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.id}
-                      selected={isItemSelected}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          onClick={(event) => handleClick(event, row.id)}
-                          color="primary"
-                          checked={isItemSelected}
-                          inputProps={{
-                            "aria-labelledby": labelId
-                          }}
-                        />
-                      </TableCell>
-                      <TableCell align="left">{row.first_name}</TableCell>
-                      <TableCell align="left">{row.last_name}</TableCell>
-                      <TableCell align="left">{row.email}</TableCell>
-                      <TableCell align="left">{row.gemder}</TableCell>
-                      <TableCell align="left">{row.active}</TableCell>
-                    </TableRow>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow
-                  style={{
-                    height: 33 * emptyRows
-                  }}
-                >
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={users.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Paper>
-    </Box>
+                    return (
+                      <TableRow
+                        hover
+                        // onClick={(event) => handleClick(event, row.id)}
+                        role="checkbox"
+                        aria-checked={isItemSelected}
+                        tabIndex={-1}
+                        key={row.id}
+                        selected={isItemSelected}
+                      >
+                        <TableCell padding="checkbox">
+                          <Checkbox
+                            onClick={(event) => handleClick(event, row.id)}
+                            color="primary"
+                            checked={isItemSelected}
+                            inputProps={{
+                              "aria-labelledby": labelId
+                            }}
+                          />
+                        </TableCell>
+                        <TableCell align="left">{row.first_name}</TableCell>
+                        <TableCell align="left">{row.last_name}</TableCell>
+                        <TableCell align="left">{row.email}</TableCell>
+                        <TableCell align="left">{row.phone}</TableCell>
+                        <TableCell align="left">{row.dob}</TableCell>
+                        <TableCell align="left">
+                          {row.gender === "Male" ? (
+                            <MaleIcon />
+                          ) : (
+                            <FemaleIcon />
+                          )}
+                        </TableCell>
+                        <TableCell align="left">
+                          {row.availability === "sick" ? (
+                            <IconButton
+                              onClick={() =>
+                                changeAvailability(row.id, row.availability)
+                              }
+                            >
+                              <SickSharpIcon />
+                            </IconButton>
+                          ) : (
+                            <IconButton
+                              onClick={() =>
+                                changeAvailability(row.id, row.availability)
+                              }
+                            >
+                              <CheckIcon />
+                            </IconButton>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                {emptyRows > 0 && (
+                  <TableRow
+                    style={{
+                      height: 33 * emptyRows
+                    }}
+                  >
+                    <TableCell colSpan={6} />
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={users.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </Paper>
+      </Box>
+    </div>
   );
 };
 

@@ -1,21 +1,27 @@
-import React, { useEffect, useCallback, memo } from "react";
+import React, { useEffect, memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import User from "../users/components/User";
-import * as Yup from "yup";
-import { Formik, Form, Field, useField } from "formik";
-import { Box, Button, Badge, Typography, Grid } from "@mui/material";
-import { TabPanel } from "@mui/lab";
-import { setEditModalOpen, setAddModalOpen, setUserType } from "../ui/uiSlice";
-import AddModal from "../users/components/Modal";
+import AddModal from "./components/AddModal";
+import { Backdrop, Badge, Button, CircularProgress } from "@mui/material";
+import {
+  setEditModalOpen,
+  setAddModalOpen,
+  setSelected,
+  setUserType,
+  setPage,
+  setFormValue
+} from "../ui/uiSlice";
 import {
   fetchUsers,
   assistantsSelectors,
   dentistsSelectors,
   clientsSelectors,
   deleteUser,
+  setDeleting,
   addUser,
-  setDeleting
+  updateUser
 } from "../users/userSlice";
+import { v4 as uuidv4 } from "uuid";
 
 console.log("Users.js aangeroepen");
 
@@ -28,18 +34,22 @@ const Users = () => {
   const totalClients = useSelector(clientsSelectors.selectTotal);
   const allClients = useSelector(clientsSelectors.selectAll);
   const userType = useSelector((state) => state.ui.userType);
-  const tabValue = useSelector((state) => state.ui.tabValue);
   const editModalOpen = useSelector((state) => state.ui.editModalOpen);
   const addModalOpen = useSelector((state) => state.ui.addModalOpen);
   const isLoading = useSelector((state) => state.users.loading);
+  const formValue = useSelector((state) => state.ui.formValue);
 
   const handleUserType = (e) => {
-    console.log(e.target.value, e.target.name);
     dispatch(setUserType(e.target.value));
+    dispatch(setPage(0));
+    dispatch(setSelected([]));
   };
 
-  const handleOpenAddModal = () => {
-    console.log("handleOpenAddModal");
+  const handleOpenAddModal = (selectIds) => {
+    dispatch(setAddModalOpen(true));
+  };
+  const handleCloseAddModal = () => {
+    dispatch(setAddModalOpen(false));
   };
 
   const onFilterList = () => {
@@ -50,16 +60,77 @@ const Users = () => {
     dispatch(setDeleting(true));
     console.log("onDelete", selectedIds, userType);
     dispatch(deleteUser({ selectedIds, userType }));
+    dispatch(setSelected([]));
   };
 
-  console.log(editModalOpen, userType);
+  const handleConfirmAddModal = () => {
+    console.log("Confirm!");
+    dispatch(addUser({ formValue, userType: userType }));
+    dispatch(setAddModalOpen(false));
+    dispatch(setFormValue({}));
+  };
+
+  const changeAvailability = (id, availability) => {
+    console.log(availability + id + userType);
+    if (availability === "yes") {
+      dispatch(
+        updateUser({
+          userType: userType,
+          id: id,
+          changes: { availability: "sick" }
+        })
+      );
+    } else if (availability === "sick") {
+      dispatch(
+        updateUser({
+          userType: userType,
+          id: id,
+          changes: { availability: "yes" }
+        })
+      );
+    }
+  };
+
+  const handleFormChange = (e) => {
+    console.log(e.target);
+
+    if (formValue.id === undefined) {
+      console.log("geen idee!");
+      const id = uuidv4();
+      console.log("nu wel: " + id);
+      return dispatch(
+        setFormValue({
+          ...formValue,
+          id: id
+        })
+      );
+    }
+
+    if (e.target.type === "radio") {
+      console.log("it's a boy or a girl");
+      return dispatch(setFormValue({ ...formValue, gender: e.target.value }));
+    }
+    dispatch(setFormValue({ ...formValue, [e.target.id]: e.target.value }));
+  };
 
   useEffect(() => {
     dispatch(fetchUsers());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div>
+      <AddModal
+        open={addModalOpen}
+        handleCloseAddModal={handleCloseAddModal}
+        handleConfirmAddModal={handleConfirmAddModal}
+        handleFormChange={handleFormChange}
+      />
+      <Backdrop open={isLoading}>
+        <CircularProgress
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        />
+      </Backdrop>
+
       <Badge badgeContent={totalClients} max={1000} color="error">
         <Button
           name="userType"
@@ -101,6 +172,7 @@ const Users = () => {
           handleOpenAddModal={handleOpenAddModal}
           totalNumber={totalClients}
           onFilterList={onFilterList}
+          changeAvailability={changeAvailability}
         />
       ) : userType === "dentists" ? (
         <User
@@ -110,6 +182,7 @@ const Users = () => {
           handleOpenAddModal={handleOpenAddModal}
           totalNumber={totalDentists}
           onFilterList={onFilterList}
+          changeAvailability={changeAvailability}
         />
       ) : (
         <User
@@ -119,6 +192,7 @@ const Users = () => {
           handleOpenAddModal={handleOpenAddModal}
           totalNumber={totalAssistants}
           onFilterList={onFilterList}
+          changeAvailability={changeAvailability}
         />
       )}
     </div>
