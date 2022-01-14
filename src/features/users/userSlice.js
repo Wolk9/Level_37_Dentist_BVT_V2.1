@@ -54,7 +54,7 @@ export const updateUser = createAsyncThunk(
 
     await fetch(URL + userType + "/" + id, requestOptions); // id.forEach(
 
-    return { id: id, userType: userType, changes: changes };
+    return { id, changes, userType };
   }
 );
 
@@ -136,9 +136,6 @@ export const userSlice = createSlice({
       state.loading = false;
       state.deleting = false;
     },
-    [updateUser.pending](state) {
-      state.loading = true;
-    },
     [addUser.pending](state) {
       state.loading = true;
     },
@@ -165,9 +162,12 @@ export const userSlice = createSlice({
     [addUser.rejected](state) {
       state.loading = false;
     },
+    [updateUser.pending](state) {
+      state.loading = true;
+    },
     [updateUser.fulfilled](state, { payload }) {
       state.loading = false;
-      console.log(current(state));
+      // console.log(current(state));
       console.log(payload.userType);
       console.log(payload);
       console.log(payload.id);
@@ -175,25 +175,24 @@ export const userSlice = createSlice({
       switch (payload.userType) {
         case "clients":
           console.log("clients");
-          clientsAdapter.updateOne(state.clients, payload.id, {
+          clientsAdapter.updateOne({
+            id: payload.id,
             changes: payload.changes
           });
           break;
         case "assistants":
           console.log("assistants");
-          assistantsAdapter.updateOne(
-            state.assistants,
-            payload.id,
-            payload.changes
-          );
+          assistantsAdapter.updateOne({
+            id: payload.id,
+            changes: payload.changes
+          });
           break;
         case "dentists":
           console.log("dentists");
-          dentistsAdapter.updateOne(
-            state.dentists,
-            payload.id,
-            payload.changes
-          );
+          dentistsAdapter.updateOne({
+            id: payload.id,
+            changes: payload.changes
+          });
           break;
         default:
           break;

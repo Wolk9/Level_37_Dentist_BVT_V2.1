@@ -121,6 +121,14 @@ const Users = () => {
   const handleCloseModal = () => {
     dispatch(setAddModalOpen(false));
     dispatch(setEditModalOpen(false));
+    // let lastUserType = userType;
+    // dispatch(setUserType("clients"));
+    // dispatch(setUserType("assistants"));
+    // dispatch(setUserType("dentists"));
+    // dispatch(setUserType("clients"));
+    // dispatch(setUserType("assistants"));
+    // dispatch(setUserType("dentists"));
+    // dispatch(setUserType(lastUserType));
   };
 
   const onFilterList = () => {
