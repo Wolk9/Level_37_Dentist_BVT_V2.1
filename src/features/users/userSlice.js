@@ -167,31 +167,27 @@ export const userSlice = createSlice({
     },
     [updateUser.fulfilled](state, { payload }) {
       state.loading = false;
-      // console.log(current(state));
-      console.log(payload.userType);
-      console.log(payload);
-      console.log(payload.id);
-      console.log(payload.changes);
-      switch (payload.userType) {
+      const { changes, id, userType } = payload;
+      switch (userType) {
         case "clients":
           console.log("clients");
-          clientsAdapter.updateOne({
-            id: payload.id,
-            changes: payload.changes
+          clientsAdapter.updateOne(state.clients, {
+            id: id,
+            changes: changes
           });
           break;
         case "assistants":
           console.log("assistants");
-          assistantsAdapter.updateOne({
-            id: payload.id,
-            changes: payload.changes
+          assistantsAdapter.updateOne(state.assistants, {
+            id: id,
+            changes: changes
           });
           break;
         case "dentists":
           console.log("dentists");
-          dentistsAdapter.updateOne({
-            id: payload.id,
-            changes: payload.changes
+          dentistsAdapter.updateOne(state.dentists, {
+            id: id,
+            changes: changes
           });
           break;
         default:

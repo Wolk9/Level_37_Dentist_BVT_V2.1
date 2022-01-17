@@ -151,7 +151,7 @@ const EnhancedTableToolbar = (props) => {
     handleOpenAddModal,
     handleOpenEditModal
   } = props;
-
+  const userType = useSelector((state) => state.ui.userType);
   return (
     <Toolbar
       sx={{
@@ -173,7 +173,7 @@ const EnhancedTableToolbar = (props) => {
           variant="subtitle1"
           component="div"
         >
-          {numSelected} selected
+          {numSelected} {userType} selected
         </Typography>
       ) : (
         <Typography

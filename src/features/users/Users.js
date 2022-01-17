@@ -41,6 +41,10 @@ const Users = () => {
   const formValue = useSelector((state) => state.ui.formValue);
   const selected = useSelector((state) => state.ui.selected);
 
+  useEffect(() => {
+    dispatch(fetchUsers());
+  }, [dispatch]);
+
   const handleUserType = (e) => {
     dispatch(setUserType(e.target.value));
     dispatch(setPage(0));
@@ -121,14 +125,6 @@ const Users = () => {
   const handleCloseModal = () => {
     dispatch(setAddModalOpen(false));
     dispatch(setEditModalOpen(false));
-    // let lastUserType = userType;
-    // dispatch(setUserType("clients"));
-    // dispatch(setUserType("assistants"));
-    // dispatch(setUserType("dentists"));
-    // dispatch(setUserType("clients"));
-    // dispatch(setUserType("assistants"));
-    // dispatch(setUserType("dentists"));
-    // dispatch(setUserType(lastUserType));
   };
 
   const onFilterList = () => {
@@ -257,10 +253,6 @@ const Users = () => {
     }
     dispatch(setFormValue({ ...formValue, [e.target.id]: e.target.value }));
   };
-
-  useEffect(() => {
-    dispatch(fetchUsers());
-  }, [dispatch]);
 
   return (
     <div>
