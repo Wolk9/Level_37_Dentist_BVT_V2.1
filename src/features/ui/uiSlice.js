@@ -11,7 +11,7 @@ const initialState = uiAdapter.getInitialState({
   order: "asc",
   orderBy: "last_name",
   selected: [],
-  formValue: {}
+  formValue: { availability: true, gender: "male" }
 });
 
 export const uiSlice = createSlice({

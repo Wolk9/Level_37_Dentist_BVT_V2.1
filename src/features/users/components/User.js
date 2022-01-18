@@ -32,6 +32,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import MaleIcon from "@mui/icons-material/Male";
 import FemaleIcon from "@mui/icons-material/Female";
+import TransgenderIcon from "@mui/icons-material/Transgender";
 import CheckIcon from "@mui/icons-material/Check";
 import SickIcon from "@mui/icons-material/Sick";
 import EditIcon from "@mui/icons-material/Edit";
@@ -355,18 +356,16 @@ const User = (props) => {
                         <TableCell align="left">{row.phone}</TableCell>
                         <TableCell align="left">{row.dob}</TableCell>
                         <TableCell align="left">
-                          {row.gender === "Male" ? (
+                          {row.gender === "male" ? (
                             <MaleIcon />
-                          ) : (
+                          ) : row.gender === "female" ? (
                             <FemaleIcon />
+                          ) : (
+                            <TransgenderIcon />
                           )}
                         </TableCell>
                         <TableCell align="left">
-                          {row.availability === "sick" ? (
-                            <SickIcon />
-                          ) : (
-                            <CheckIcon />
-                          )}
+                          {row.availability ? <CheckIcon /> : <SickIcon />}
                         </TableCell>
                       </TableRow>
                     );

@@ -251,6 +251,14 @@ const Users = () => {
       console.log("it's a boy or a girl");
       return dispatch(setFormValue({ ...formValue, gender: e.target.value }));
     }
+
+    if (e.target.id === "availability") {
+      console.log("availability change!");
+      return dispatch(
+        setFormValue({ ...formValue, availability: !formValue.availability })
+      );
+    }
+
     dispatch(setFormValue({ ...formValue, [e.target.id]: e.target.value }));
   };
 

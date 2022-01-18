@@ -10,6 +10,7 @@ import {
   Modal,
   RadioGroup,
   Radio,
+  Switch,
   TextField
 } from "@mui/material";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
@@ -73,7 +74,31 @@ export default (props) => {
       >
         <Box sx={modalStyle}>
           <div>
-            <h2 id="modal-title">Add {userType}</h2>
+            <Grid
+              container
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Grid item>
+                <h2 id="modal-title">Edit {userType} </h2>
+              </Grid>
+              <Grid item>
+                <FormControlLabel
+                  value={formValue.availability}
+                  control={
+                    <Switch
+                      defaultChecked
+                      id="availability"
+                      onChange={handleFormChange}
+                      inputProps={{ "aria-label": "availability" }}
+                    />
+                  }
+                  label={formValue.availability ? "Available" : "Sick"}
+                  labelPlacement="start"
+                />
+              </Grid>
+            </Grid>
             <FormControl fullWidth color="primary">
               <TextField
                 sx={{ mt: 4 }}
