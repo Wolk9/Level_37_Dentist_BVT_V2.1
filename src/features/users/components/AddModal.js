@@ -13,8 +13,8 @@ import {
   Switch,
   TextField
 } from "@mui/material";
-import { useFormControl } from "@mui/material/FormControl";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
+import { makeStyles, ThemeProvider, useTheme } from "@mui/styles";
 
 import { setFormValue, setFormError } from "../../ui/uiSlice";
 
@@ -47,7 +47,6 @@ export default function AddModal(props) {
   const dispatch = useDispatch();
   const userType = useSelector((state) => state.ui.userType);
   const formValue = useSelector((state) => state.ui.formValue);
-
   const modalStyle = {
     color: "#eee",
     position: "absolute",
@@ -74,7 +73,7 @@ export default function AddModal(props) {
         aria-labelledby="id..."
       >
         <Box sx={modalStyle}>
-          <div>
+          <form>
             <Grid
               container
               direction="row"
@@ -82,7 +81,14 @@ export default function AddModal(props) {
               alignItems="center"
             >
               <Grid item>
-                <h2 id="modal-title">Edit {userType} </h2>
+                <h2 id="modal-title">
+                  Add new{" "}
+                  {userType === "clients"
+                    ? "Client"
+                    : userType === "dentists"
+                    ? "Dentist"
+                    : "Assistant"}
+                </h2>
               </Grid>
               <Grid item>
                 <FormControlLabel
@@ -91,6 +97,7 @@ export default function AddModal(props) {
                     <Switch
                       defaultChecked
                       id="availability"
+                      name="availability"
                       onChange={handleFormChange}
                       inputProps={{ "aria-label": "availability" }}
                     />
@@ -100,106 +107,114 @@ export default function AddModal(props) {
                 />
               </Grid>
             </Grid>
-            <FormControl fullWidth color="primary">
-              <TextField
-                sx={{ mt: 4 }}
-                id="first_name"
-                label="First Name"
-                variant="outlined"
-                helperText="required"
-                placeholder="First Name"
-                onChange={handleFormChange}
-              >
-                First Name
-              </TextField>
-              <TextField
-                sx={{ mt: 2 }}
-                id="last_name"
-                label="Last Name"
-                variant="outlined"
-                helperText="required"
-                placeholder="Last Name"
-                onChange={handleFormChange}
-              >
-                Last Name
-              </TextField>
-              <TextField
-                sx={{ mt: 2 }}
-                id="email"
-                label="Email"
-                variant="outlined"
-                helperText="We shall never share your email"
-                placeholder="Email"
-                onChange={handleFormChange}
-              >
-                Email address
-              </TextField>
-              <TextField
-                sx={{ mt: 2, mb: 4 }}
-                id="phone"
-                label="Phone"
-                variant="outlined"
-                placeholder="Phonenumber"
-                onChange={handleFormChange}
-              >
-                Email address
-              </TextField>
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
-                  <DesktopDatePicker
-                    id="dob"
-                    label="Date of Birth"
-                    inputFormat="DD/MM/YYYY"
-                    placeholder="13/07/1970"
-                    onChange={(date) => {
-                      console.log(date);
-                      if (date === null) {
-                        return setFormValue({
-                          ...formValue,
-                          dob: 0
-                        });
-                      }
-                      dispatch(
-                        setFormValue({
-                          ...formValue,
-                          dob: date.$D + "/" + (date.$M + 1) + "/" + date.$y
-                        })
-                      );
-                    }}
-                    renderInput={(params) => <TextField {...params} />}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <RadioGroup
-                    name="row-radio-buttons-group"
-                    row
-                    aria-label="gender"
-                    appearance="picker"
-                    defaultValue="male"
-                    onChange={handleFormChange}
-                  >
-                    <FormControlLabel
-                      value="female"
-                      id="gender"
-                      control={<Radio id="gender" />}
-                      label="Female"
-                    />
-                    <FormControlLabel
-                      value="male"
-                      id="gender"
-                      control={<Radio id="gender" />}
-                      label="Male"
-                    />
-                    <FormControlLabel
-                      value="other"
-                      id="gender"
-                      control={<Radio id="gender" />}
-                      label="Other"
-                    />
-                  </RadioGroup>
-                </Grid>
+            <Grid container columns={2}>
+              <Grid item sx={{ width: "50%" }}>
+                <TextField
+                  sx={{ width: "90%", margin: "5px" }}
+                  id="first_name"
+                  name="first_name"
+                  label="First Name"
+                  variant="outlined"
+                  helperText="required"
+                  placeholder="First Name"
+                  value={formValue.first_name}
+                  onChange={handleFormChange}
+                >
+                  First Name
+                </TextField>
+                <TextField
+                  sx={{ width: "90%", margin: "5px" }}
+                  id="last_name"
+                  name="last_name"
+                  label="Last Name"
+                  variant="outlined"
+                  helperText="required"
+                  placeholder="Last Name"
+                  value={formValue.last_name}
+                  onChange={handleFormChange}
+                >
+                  Last Name
+                </TextField>
+                <DesktopDatePicker
+                  id="dob"
+                  label="Date of Birth"
+                  inputFormat="DD/MM/YYYY"
+                  placeholder="13/07/1970"
+                  onChange={(date) => {
+                    console.log(date);
+                    if (date === null) {
+                      return setFormValue({
+                        ...formValue,
+                        dob: 0
+                      });
+                    }
+                    dispatch(
+                      setFormValue({
+                        ...formValue,
+                        dob: date.$D + "/" + (date.$M + 1) + "/" + date.$y
+                      })
+                    );
+                  }}
+                  renderInput={(params) => <TextField {...params} />}
+                />
               </Grid>
-            </FormControl>
+              <Grid item sx={{ width: "50%" }}>
+                <TextField
+                  sx={{ width: "90%", margin: "5px" }}
+                  id="email"
+                  name="email"
+                  label="Email"
+                  variant="outlined"
+                  helperText="We shall never share your email"
+                  placeholder="Email"
+                  onChange={handleFormChange}
+                >
+                  Email address
+                </TextField>
+                <TextField
+                  sx={{ width: "90%", margin: "5px" }}
+                  id="phone"
+                  name="phone"
+                  label="Phone"
+                  variant="outlined"
+                  placeholder="Phonenumber"
+                  onChange={handleFormChange}
+                >
+                  Email address
+                </TextField>
+                <RadioGroup
+                  name="row-radio-buttons-group"
+                  row
+                  aria-label="gender"
+                  appearance="picker"
+                  defaultValue="male"
+                  onChange={handleFormChange}
+                >
+                  <FormControlLabel
+                    value="female"
+                    id="gender"
+                    name="gender"
+                    control={<Radio id="gender" name="gender" />}
+                    label="Female"
+                  />
+                  <FormControlLabel
+                    value="male"
+                    id="gender"
+                    name="gender"
+                    control={<Radio id="gender" name="gender" />}
+                    label="Male"
+                  />
+                  <FormControlLabel
+                    value="other"
+                    id="gender"
+                    name="gender"
+                    control={<Radio id="gender" name="gender" />}
+                    label="Other"
+                  />
+                </RadioGroup>
+              </Grid>
+            </Grid>
+            <FormControl fullWidth color="primary"></FormControl>
             <Grid container direction="row" justifyContent="flex-end">
               <Grid item>
                 <ButtonGroup>
@@ -212,7 +227,7 @@ export default function AddModal(props) {
                 </ButtonGroup>
               </Grid>
             </Grid>
-          </div>
+          </form>
         </Box>
       </Modal>
     </div>

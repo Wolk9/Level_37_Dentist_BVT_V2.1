@@ -140,8 +140,24 @@ const Users = () => {
     dispatch(setSelected([]));
   };
 
-  const handleConfirmAddModal = () => {
+  const validate = () => {
+    let temp = {};
+    temp.first_name = formValue.first_name ? "" : "This field is required.";
+    temp.last_name = formValue.last_name ? "" : "This field is required.";
+    temp.phone =
+      formValue.phone.length > 9 ? "" : "Minimum of 10 numbers required";
+    temp.email = /$|.+@.+..+/.test(formValue.email) ? "" : "Email is not valid";
+    dispatch(setFormError({ ...temp }));
+    console.log(Object.values(temp).every((x) => x === ""));
+    return Object.values(temp).every((x) => x === "");
+  };
+
+  const handleConfirmAddModal = (e) => {
+    e.preventDefault();
     console.log("Confirm!");
+    if (!validate()) {
+      window.alert("testing...");
+    }
     dispatch(addUser({ formValue, userType: userType }));
     dispatch(setAddModalOpen(false));
     dispatch(setFormValue({}));
@@ -234,20 +250,9 @@ const Users = () => {
   //   //      }
   // };
 
-  const validate = () => {
-    let temp = {};
-    temp.first_name = formValue.first_name ? "" : "This field is required.";
-    temp.last_name = formValue.last_name ? "" : "This field is required.";
-    temp.phone =
-      formValue.phone.length > 9 ? "" : "Minimum of 10 numbers required";
-    temp.email = /$|.+@.+..+/.test(formValue.email) ? "" : "Email is not valid";
-    dispatch(setFormError({ ...temp }));
-
-    //return Object.formValue(temp).every((x) => x === "");
-  };
-
   const handleFormChange = (e) => {
     console.log(e.target);
+    const { name, value } = e.target;
 
     if (formValue.id === undefined) {
       console.log("geen idee!");
@@ -261,23 +266,17 @@ const Users = () => {
       );
     }
 
-    if (validate()) {
-      window.alert("testing...");
-    }
-
-    if (e.target.type === "radio") {
+    if (name === "gender") {
       console.log("it's a boy or a girl");
-      return dispatch(setFormValue({ ...formValue, gender: e.target.value }));
+      return dispatch(setFormValue({ ...formValue, [name]: value }));
     }
 
-    if (e.target.id === "availability") {
+    if (name === "availability") {
       console.log("availability change!");
-      return dispatch(
-        setFormValue({ ...formValue, availability: !formValue.availability })
-      );
+      return dispatch(setFormValue({ ...formValue, [name]: !value }));
     }
 
-    dispatch(setFormValue({ ...formValue, [e.target.id]: e.target.value }));
+    dispatch(setFormValue({ ...formValue, [name]: value }));
   };
 
   return (
