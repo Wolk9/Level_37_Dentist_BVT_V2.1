@@ -10,7 +10,8 @@ import {
   setSelected,
   setUserType,
   setPage,
-  setFormValue
+  setFormValue,
+  setFormError
 } from "../ui/uiSlice";
 import {
   fetchUsers,
@@ -39,6 +40,7 @@ const Users = () => {
   const addModalOpen = useSelector((state) => state.ui.addModalOpen);
   const isLoading = useSelector((state) => state.users.loading);
   const formValue = useSelector((state) => state.ui.formValue);
+  const formError = useSelector((state) => state.ui.formError);
   const selected = useSelector((state) => state.ui.selected);
 
   useEffect(() => {
@@ -217,19 +219,31 @@ const Users = () => {
     dispatch(setFormValue({}));
   };
 
-  const handleChangeValue = (id, key, value) => {
-    console.log(id, key, value, userType);
-    dispatch(
-      updateUser({
-        userType: userType,
-        id: id,
-        changes: { key: "sick" }
-      })
-    );
+  // const handleChangeValue = (id, key, value) => {
+  //   console.log(id, key, value, userType);
+  //   dispatch(
+  //     updateUser({
+  //       userType: userType,
+  //       id: id,
+  //       changes: { key: "sick" }
+  //     })
+  //   );
 
-    //onClick={() =>
-    //          handleChangeValue(row.id, row.availability)
-    //      }
+  //   //onClick={() =>
+  //   //          handleChangeValue(row.id, row.availability)
+  //   //      }
+  // };
+
+  const validate = () => {
+    let temp = {};
+    temp.first_name = formValue.first_name ? "" : "This field is required.";
+    temp.last_name = formValue.last_name ? "" : "This field is required.";
+    temp.phone =
+      formValue.phone.length > 9 ? "" : "Minimum of 10 numbers required";
+    temp.email = /$|.+@.+..+/.test(formValue.email) ? "" : "Email is not valid";
+    dispatch(setFormError({ ...temp }));
+
+    //return Object.formValue(temp).every((x) => x === "");
   };
 
   const handleFormChange = (e) => {
@@ -245,6 +259,10 @@ const Users = () => {
           id: id
         })
       );
+    }
+
+    if (validate()) {
+      window.alert("testing...");
     }
 
     if (e.target.type === "radio") {

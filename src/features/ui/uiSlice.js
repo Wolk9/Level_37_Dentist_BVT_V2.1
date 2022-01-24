@@ -11,7 +11,8 @@ const initialState = uiAdapter.getInitialState({
   order: "asc",
   orderBy: "last_name",
   selected: [],
-  formValue: { availability: true, gender: "male" }
+  formValue: { availability: true, gender: "male", phone: "+31" },
+  formError: {}
 });
 
 export const uiSlice = createSlice({
@@ -30,8 +31,12 @@ export const uiSlice = createSlice({
       void (state.editModalOpen = action.payload),
     setAddModalOpen: (state, action) =>
       void (state.addModalOpen = action.payload),
+    setFormError: (state, action) => {
+      console.log("error", action.payload);
+      state.formError = action.payload;
+    },
     setFormValue: (state, action) => {
-      console.log(action.payload);
+      console.log("form", action.payload);
       state.formValue = action.payload;
     },
     extraReducers: {}
@@ -49,7 +54,8 @@ export const {
   setSelected,
   setEditModalOpen,
   setAddModalOpen,
-  setFormValue
+  setFormValue,
+  setFormError
 } = uiSlice.actions;
 
 export default uiSlice.reducer;
