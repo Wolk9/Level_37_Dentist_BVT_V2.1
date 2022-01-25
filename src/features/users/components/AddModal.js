@@ -14,9 +14,7 @@ import {
   TextField
 } from "@mui/material";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
-import { makeStyles, ThemeProvider, useTheme } from "@mui/styles";
-
-import { setFormValue, setFormError } from "../../ui/uiSlice";
+import { setFormValue } from "../../ui/uiSlice";
 
 // const validate = (values) => {
 //   const errors = {};
@@ -47,6 +45,7 @@ export default function AddModal(props) {
   const dispatch = useDispatch();
   const userType = useSelector((state) => state.ui.userType);
   const formValue = useSelector((state) => state.ui.formValue);
+  const formError = useSelector((state) => state.ui.formError);
   const modalStyle = {
     color: "#eee",
     position: "absolute",
@@ -73,7 +72,7 @@ export default function AddModal(props) {
         aria-labelledby="id..."
       >
         <Box sx={modalStyle}>
-          <form>
+          <form autoComplete="off">
             <Grid
               container
               direction="row"
@@ -115,10 +114,14 @@ export default function AddModal(props) {
                   name="first_name"
                   label="First Name"
                   variant="outlined"
-                  helperText="required"
                   placeholder="First Name"
+                  helperText="Required"
                   value={formValue.first_name}
                   onChange={handleFormChange}
+                  {...(formError.first_name && {
+                    error: true,
+                    helperText: formError.first_name
+                  })}
                 >
                   First Name
                 </TextField>
@@ -128,14 +131,35 @@ export default function AddModal(props) {
                   name="last_name"
                   label="Last Name"
                   variant="outlined"
-                  helperText="required"
                   placeholder="Last Name"
+                  helperText="Required"
                   value={formValue.last_name}
                   onChange={handleFormChange}
+                  {...(formError.last_name && {
+                    error: true,
+                    helperText: formError.last_name
+                  })}
                 >
                   Last Name
                 </TextField>
-                <DesktopDatePicker
+                <TextField
+                  id="date"
+                  label="Birthday"
+                  name="dob"
+                  type="date"
+                  format="dd/MM/yyyy"
+                  defaultValue="2017-05-24"
+                  sx={{ width: 220 }}
+                  InputLabelProps={{
+                    shrink: true
+                  }}
+                  onChange={handleFormChange}
+                  {...(formError.dob && {
+                    error: true,
+                    helperText: formError.dob
+                  })}
+                />
+                {/* <DesktopDatePicker
                   id="dob"
                   label="Date of Birth"
                   inputFormat="DD/MM/YYYY"
@@ -156,7 +180,7 @@ export default function AddModal(props) {
                     );
                   }}
                   renderInput={(params) => <TextField {...params} />}
-                />
+                /> */}
               </Grid>
               <Grid item sx={{ width: "50%" }}>
                 <TextField
@@ -167,7 +191,12 @@ export default function AddModal(props) {
                   variant="outlined"
                   helperText="We shall never share your email"
                   placeholder="Email"
+                  value={formValue.email}
                   onChange={handleFormChange}
+                  {...(formError.email && {
+                    error: true,
+                    helperText: formError.email
+                  })}
                 >
                   Email address
                 </TextField>
@@ -178,40 +207,55 @@ export default function AddModal(props) {
                   label="Phone"
                   variant="outlined"
                   placeholder="Phonenumber"
+                  value={formValue.phone}
                   onChange={handleFormChange}
+                  {...(formError.phone && {
+                    error: true,
+                    helperText: formError.phone
+                  })}
                 >
                   Email address
                 </TextField>
-                <RadioGroup
-                  name="row-radio-buttons-group"
-                  row
-                  aria-label="gender"
-                  appearance="picker"
-                  defaultValue="male"
-                  onChange={handleFormChange}
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="space-around"
+                  alignItems="center"
+                  sx={{ mt: "5px" }}
                 >
-                  <FormControlLabel
-                    value="female"
-                    id="gender"
-                    name="gender"
-                    control={<Radio id="gender" name="gender" />}
-                    label="Female"
-                  />
-                  <FormControlLabel
-                    value="male"
-                    id="gender"
-                    name="gender"
-                    control={<Radio id="gender" name="gender" />}
-                    label="Male"
-                  />
-                  <FormControlLabel
-                    value="other"
-                    id="gender"
-                    name="gender"
-                    control={<Radio id="gender" name="gender" />}
-                    label="Other"
-                  />
-                </RadioGroup>
+                  <Grid item>
+                    <RadioGroup
+                      name="gender"
+                      row
+                      aria-label="gender"
+                      appearance="picker"
+                      value={formValue.gender}
+                      onChange={handleFormChange}
+                    >
+                      <FormControlLabel
+                        value="male"
+                        id="gender"
+                        name="gender"
+                        control={<Radio id="gender" name="gender" />}
+                        label="Male"
+                      />
+                      <FormControlLabel
+                        value="female"
+                        id="gender"
+                        name="gender"
+                        control={<Radio id="gender" name="gender" />}
+                        label="Female"
+                      />
+                      <FormControlLabel
+                        value="other"
+                        id="gender"
+                        name="gender"
+                        control={<Radio id="gender" name="gender" />}
+                        label="Other"
+                      />
+                    </RadioGroup>
+                  </Grid>
+                </Grid>
               </Grid>
             </Grid>
             <FormControl fullWidth color="primary"></FormControl>

@@ -11,6 +11,7 @@ import {
   setUserType,
   setPage,
   setFormValue,
+  resetFormValue,
   setFormError
 } from "../ui/uiSlice";
 import {
@@ -127,6 +128,7 @@ const Users = () => {
   const handleCloseModal = () => {
     dispatch(setAddModalOpen(false));
     dispatch(setEditModalOpen(false));
+    dispatch(resetFormValue());
   };
 
   const onFilterList = () => {
@@ -142,11 +144,21 @@ const Users = () => {
 
   const validate = () => {
     let temp = {};
-    temp.first_name = formValue.first_name ? "" : "This field is required.";
-    temp.last_name = formValue.last_name ? "" : "This field is required.";
+    temp.first_name = formValue.first_name ? "" : "First name is required.";
+    temp.last_name = formValue.last_name ? "" : "Last name is required.";
     temp.phone =
-      formValue.phone.length > 9 ? "" : "Minimum of 10 numbers required";
-    temp.email = /$|.+@.+..+/.test(formValue.email) ? "" : "Email is not valid";
+      /^(?!\b(0)\1+\b)(\+?\d{1,3}[. -]?)?\(?\d{3}\)?([. -]?)\d{3}\3\d{4}$/g.test(
+        formValue.phone
+      )
+        ? ""
+        : "Not Valid. Try International format (+31...)";
+    temp.email =
+      /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g.test(
+        formValue.email
+      )
+        ? ""
+        : "Email is not valid";
+    temp.dob = formValue.dob ? "" : "Please add a day of birth";
     dispatch(setFormError({ ...temp }));
     console.log(Object.values(temp).every((x) => x === ""));
     return Object.values(temp).every((x) => x === "");
@@ -155,12 +167,12 @@ const Users = () => {
   const handleConfirmAddModal = (e) => {
     e.preventDefault();
     console.log("Confirm!");
-    if (!validate()) {
-      window.alert("testing...");
+    if (validate()) {
+      console.log("testing...");
+      dispatch(addUser({ formValue, userType: userType }));
+      dispatch(setAddModalOpen(false));
+      dispatch(resetFormValue());
     }
-    dispatch(addUser({ formValue, userType: userType }));
-    dispatch(setAddModalOpen(false));
-    dispatch(setFormValue({}));
   };
 
   const handleConfirmEditModal = () => {
@@ -232,7 +244,7 @@ const Users = () => {
 
     handleCloseModal();
     dispatch(setSelected([]));
-    dispatch(setFormValue({}));
+    dispatch(resetFormValue());
   };
 
   // const handleChangeValue = (id, key, value) => {
@@ -255,28 +267,18 @@ const Users = () => {
     const { name, value } = e.target;
 
     if (formValue.id === undefined) {
-      console.log("geen idee!");
+      console.log("geen idee!", formValue);
       const id = uuidv4();
       console.log("nu wel: " + id);
-      return dispatch(
+      dispatch(
         setFormValue({
           ...formValue,
           id: id
         })
       );
+    } else {
+      dispatch(setFormValue({ ...formValue, [name]: value }));
     }
-
-    if (name === "gender") {
-      console.log("it's a boy or a girl");
-      return dispatch(setFormValue({ ...formValue, [name]: value }));
-    }
-
-    if (name === "availability") {
-      console.log("availability change!");
-      return dispatch(setFormValue({ ...formValue, [name]: !value }));
-    }
-
-    dispatch(setFormValue({ ...formValue, [name]: value }));
   };
 
   return (

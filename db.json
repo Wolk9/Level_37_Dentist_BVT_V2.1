@@ -2276,6 +2276,16 @@
       "first_name": "Piet",
       "last_name": "Puk",
       "email": "martin.de.bes@me.com"
+    },
+    {
+      "availability": true,
+      "gender": "male",
+      "phone": "+311235472810",
+      "first_name": "Martin",
+      "last_name": "de Bes",
+      "email": "martin.de.bes@me.com",
+      "dob": "6/7/1971",
+      "id": "a5dd51f1-5247-4394-97a8-8aad4993d276"
     }
   ],
   "dentists": [
@@ -2312,37 +2322,19 @@
       "phone": "0651267543",
       "dob": "17/1/1991",
       "gender": "female"
+    },
+    {
+      "id": "d57901f0-21da-4e3d-8e3a-5a15428b1e4d",
+      "availability": true,
+      "gender": "male",
+      "phone": "+31424521231",
+      "first_name": "Martin",
+      "last_name": "de Bes",
+      "email": "martin.de.bes@me.com",
+      "dob": "1971-07-18"
     }
   ],
   "assistants": [
-    {
-      "id": "36cccd02-ea4a-4b0c-a976-90b71a9e6b9c",
-      "last_name": "de Bes",
-      "email": "martin.de.bes@me.com",
-      "phone": "0611266408",
-      "first_name": "Martin",
-      "gender": "male",
-      "dob": "18/7/1971",
-      "availability": false
-    },
-    {
-      "availability": true,
-      "gender": "male",
-      "id": "94fc461b-f80f-46e6-b84b-84191ed2d3d3",
-      "phone": "0611266408",
-      "first_name": "Martin",
-      "last_name": "de Bes",
-      "email": "martin.de.bes@me.com"
-    },
-    {
-      "availability": true,
-      "gender": "male",
-      "id": "ca6ad897-ebbd-4112-89a5-26682bbd198a",
-      "first_name": "Martin",
-      "last_name": "de Bes",
-      "email": "martin.de.bes@me.com",
-      "phone": "0611266408"
-    },
     {
       "availability": true,
       "gender": "female",
@@ -2353,35 +2345,71 @@
       "first_name": "Fleurtje"
     },
     {
-      "availability": true,
-      "gender": "male",
-      "phone": "+31",
-      "id": "d90c8e9a-171a-4c54-b8c7-92ebcdef470f",
-      "first_name": "Bert",
-      "last_name": "Kuipers",
-      "email": "martin.de.bes@me.com"
-    },
-    {
-      "id": "cd62e995-3677-4e85-b298-9a9e113c2c33",
-      "first_name": "Martin",
-      "last_name": "de Bes",
-      "email": "martin.de.bes@me.com",
-      "phone": "+31837832098341",
-      "gender": "female"
-    },
-    {
-      "availability": true,
-      "gender": "male",
-      "phone": "+31",
-      "id": "f708be59-dc8b-4ee1-9be7-e7568f9b3182",
-      "first_name": "Martin"
-    },
-    {
       "id": "ebdc37cd-f225-4ab0-b53b-d57baee1c595",
       "first_name": "martin",
       "last_name": "de Bes",
       "email": "martin.de.bes@Me.com",
       "phone": "+312923891202"
+    },
+    {
+      "id": "6b393209-5903-4f52-b84c-d55aeb55a66e",
+      "availability": true,
+      "gender": "male",
+      "phone": "0611266408",
+      "first_name": "Martin",
+      "last_name": "de Bes",
+      "email": "martin.de.bes@me.com",
+      "dob": "18/7/1971"
+    },
+    {
+      "id": "13f1f4f8-4baf-4ffe-8d9e-7b7f77758e55",
+      "availability": true,
+      "gender": "female",
+      "phone": "+31",
+      "first_name": "Martin",
+      "last_name": "de Bes",
+      "email": "martin.de.bes@me.com",
+      "dob": "1971-07-18"
+    },
+    {
+      "id": "5a15d3f1-24e3-401c-ae74-94dc3f9edc86",
+      "availability": true,
+      "gender": "female",
+      "phone": "0651267543",
+      "first_name": "F",
+      "last_name": "Bennis",
+      "email": "Fleurbennis@live.nl",
+      "dob": ""
+    },
+    {
+      "id": "19065621-8cb6-4bd7-a4f2-43c2fb35de76",
+      "availability": true,
+      "gender": "female",
+      "phone": "+31399132345",
+      "first_name": "Piet",
+      "last_name": "Puk",
+      "email": "",
+      "dob": "1893-09-21"
+    },
+    {
+      "id": "08e6fee4-bd54-45b7-a6cf-96fdc99c24b2",
+      "availability": true,
+      "gender": "female",
+      "phone": "+31611233481",
+      "first_name": "Henk",
+      "last_name": "van Klaveren",
+      "email": "henk@live.nl",
+      "dob": ""
+    },
+    {
+      "id": "3df695ab-aca5-4549-b273-44181e8fee7c",
+      "availability": true,
+      "gender": "male",
+      "phone": "+31611266408",
+      "first_name": "Martin",
+      "last_name": "de Bes",
+      "email": "martin@me.com",
+      "dob": "1970-07-18"
     }
   ],
   "appts": [
