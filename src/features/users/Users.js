@@ -26,8 +26,6 @@ import {
 } from "../users/userSlice";
 import { v4 as uuidv4 } from "uuid";
 
-console.log("Users.js aangeroepen");
-
 const Users = () => {
   const dispatch = useDispatch();
   const totalAssistants = useSelector(assistantsSelectors.selectTotal);
@@ -41,7 +39,6 @@ const Users = () => {
   const addModalOpen = useSelector((state) => state.ui.addModalOpen);
   const isLoading = useSelector((state) => state.users.loading);
   const formValue = useSelector((state) => state.ui.formValue);
-  const formError = useSelector((state) => state.ui.formError);
   const selected = useSelector((state) => state.ui.selected);
 
   useEffect(() => {
