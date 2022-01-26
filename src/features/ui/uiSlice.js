@@ -3,8 +3,8 @@ import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
 const uiAdapter = createEntityAdapter({});
 
 const initialState = uiAdapter.getInitialState({
-  editModalOpen: false,
-  addModalOpen: false,
+  userModalOpen: false,
+  edit: false,
   userType: "clients",
   page: 0,
   rowsPerPage: 10,
@@ -36,10 +36,9 @@ export const uiSlice = createSlice({
       void (state.rowsPerPage = action.payload),
 
     setUserType: (state, action) => void (state.userType = action.payload),
-    setEditModalOpen: (state, action) =>
-      void (state.editModalOpen = action.payload),
-    setAddModalOpen: (state, action) =>
-      void (state.addModalOpen = action.payload),
+    setUserModalOpen: (state, action) =>
+      void (state.userModalOpen = action.payload),
+    setEdit: (state, action) => void (state.edit = action.payload),
     setFormError: (state, action) => {
       console.log("formError", action.payload);
       state.formError = action.payload;
@@ -65,8 +64,8 @@ export const {
   setOrder,
   setOrderBy,
   setSelected,
-  setEditModalOpen,
-  setAddModalOpen,
+  setUserModalOpen,
+  setEdit,
   setFormValue,
   resetFormValue,
   setFormError

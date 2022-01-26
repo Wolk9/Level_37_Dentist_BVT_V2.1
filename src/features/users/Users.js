@@ -1,12 +1,13 @@
 import React, { useEffect, memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import User from "../users/components/User";
-import AddModal from "./components/AddModal";
-import EditModal from "./components/EditModal";
+//import AddModal from "./components/AddModal";
+//import EditModal from "./components/EditModal";
+import UserModal from "./components/UserModal";
 import { Backdrop, Badge, Button, CircularProgress } from "@mui/material";
 import {
-  setEditModalOpen,
-  setAddModalOpen,
+  setUserModalOpen,
+  setEdit,
   setSelected,
   setUserType,
   setPage,
@@ -35,11 +36,11 @@ const Users = () => {
   const totalClients = useSelector(clientsSelectors.selectTotal);
   const allClients = useSelector(clientsSelectors.selectAll);
   const userType = useSelector((state) => state.ui.userType);
-  const editModalOpen = useSelector((state) => state.ui.editModalOpen);
-  const addModalOpen = useSelector((state) => state.ui.addModalOpen);
+  const userModalOpen = useSelector((state) => state.ui.userModalOpen);
   const isLoading = useSelector((state) => state.users.loading);
   const formValue = useSelector((state) => state.ui.formValue);
   const selected = useSelector((state) => state.ui.selected);
+  const edit = useSelector((state) => state.ui.edit);
 
   useEffect(() => {
     dispatch(fetchUsers());
@@ -51,80 +52,94 @@ const Users = () => {
     dispatch(setSelected([]));
   };
 
-  const handleOpenAddModal = () => {
-    dispatch(setAddModalOpen(true));
-  };
+  const handleOpenUserModal = () => {
+    console.log(selected, selected.length);
+    if (selected !== null || undefined || []) {
+      console.log("true");
+      dispatch(setEdit(true));
+    } else {
+      console.log("false");
+      dispatch(setEdit(false));
+    }
 
-  const handleOpenEditModal = () => {
-    let selectedUserValues = {};
-    switch (userType) {
-      case "clients":
-        selectedUserValues = allClients.find(
-          (client) => client.id === selected[0]
-        );
-        console.log("clients", selectedUserValues);
-        dispatch(
-          setFormValue({
-            ...formValue,
-            id: selectedUserValues.id,
-            first_name: selectedUserValues.first_name,
-            last_name: selectedUserValues.last_name,
-            email: selectedUserValues.email,
-            phone: selectedUserValues.phone,
-            dob: selectedUserValues.dob,
-            gender: selectedUserValues.gender,
-            availability: selectedUserValues.availability
-          })
-        );
-        dispatch(setEditModalOpen(true));
-        break;
-      case "assistants":
-        selectedUserValues = allAssistants.find(
-          (assistants) => assistants.id === selected[0]
-        );
-        console.log("asistants", selectedUserValues);
-        dispatch(
-          setFormValue({
-            ...formValue,
-            id: selectedUserValues.id,
-            first_name: selectedUserValues.first_name,
-            last_name: selectedUserValues.last_name,
-            email: selectedUserValues.email,
-            phone: selectedUserValues.phone,
-            dob: selectedUserValues.dob,
-            gender: selectedUserValues.gender,
-            availability: selectedUserValues.availability
-          })
-        );
-        dispatch(setEditModalOpen(true));
-        break;
-      case "dentists":
-        selectedUserValues = allDentists.find(
-          (dentists) => dentists.id === selected[0]
-        );
-        console.log("dentists", selectedUserValues);
-        dispatch(
-          setFormValue({
-            ...formValue,
-            id: selectedUserValues.id,
-            first_name: selectedUserValues.first_name,
-            last_name: selectedUserValues.last_name,
-            email: selectedUserValues.email,
-            phone: selectedUserValues.phone,
-            dob: selectedUserValues.dob,
-            gender: selectedUserValues.gender,
-            availability: selectedUserValues.availability
-          })
-        );
-        dispatch(setEditModalOpen(true));
-        break;
-      default:
-        break;
+    console.log(edit);
+
+    if (edit) {
+      let selectedUserValues = {};
+      console.log("handleUserOpenModal", edit);
+      switch (userType) {
+        case "clients":
+          selectedUserValues = allClients.find(
+            (client) => client.id === selected[0]
+          );
+          console.log("clients", selectedUserValues);
+          dispatch(
+            setFormValue({
+              ...formValue,
+              id: selectedUserValues.id,
+              first_name: selectedUserValues.first_name,
+              last_name: selectedUserValues.last_name,
+              email: selectedUserValues.email,
+              phone: selectedUserValues.phone,
+              dob: selectedUserValues.dob,
+              gender: selectedUserValues.gender,
+              availability: selectedUserValues.availability
+            })
+          );
+          dispatch(setUserModalOpen(true));
+          break;
+        case "assistants":
+          selectedUserValues = allAssistants.find(
+            (assistants) => assistants.id === selected[0]
+          );
+          console.log("asistants", selectedUserValues);
+          dispatch(
+            setFormValue({
+              ...formValue,
+              id: selectedUserValues.id,
+              first_name: selectedUserValues.first_name,
+              last_name: selectedUserValues.last_name,
+              email: selectedUserValues.email,
+              phone: selectedUserValues.phone,
+              dob: selectedUserValues.dob,
+              gender: selectedUserValues.gender,
+              availability: selectedUserValues.availability
+            })
+          );
+          dispatch(setUserModalOpen(true));
+          break;
+        case "dentists":
+          selectedUserValues = allDentists.find(
+            (dentists) => dentists.id === selected[0]
+          );
+          console.log("dentists", selectedUserValues);
+          dispatch(
+            setFormValue({
+              ...formValue,
+              id: selectedUserValues.id,
+              first_name: selectedUserValues.first_name,
+              last_name: selectedUserValues.last_name,
+              email: selectedUserValues.email,
+              phone: selectedUserValues.phone,
+              dob: selectedUserValues.dob,
+              gender: selectedUserValues.gender,
+              availability: selectedUserValues.availability
+            })
+          );
+          dispatch(setUserModalOpen(true));
+          break;
+        default:
+          break;
+      }
+    } else {
+      console.log("edit: ", edit);
+      dispatch(setUserModalOpen(true));
     }
   };
+
   const handleCloseModal = () => {
-    dispatch(setAddModalOpen(false));
-    dispatch(setEditModalOpen(false));
+    dispatch(setUserModalOpen(false));
+    dispatch(setEdit(false));
     dispatch(resetFormValue());
   };
 
@@ -167,8 +182,7 @@ const Users = () => {
     if (validate()) {
       console.log("testing...");
       dispatch(addUser({ formValue, userType: userType }));
-      dispatch(setAddModalOpen(false));
-      dispatch(resetFormValue());
+      handleCloseModal();
     }
   };
 
@@ -244,21 +258,6 @@ const Users = () => {
     dispatch(resetFormValue());
   };
 
-  // const handleChangeValue = (id, key, value) => {
-  //   console.log(id, key, value, userType);
-  //   dispatch(
-  //     updateUser({
-  //       userType: userType,
-  //       id: id,
-  //       changes: { key: "sick" }
-  //     })
-  //   );
-
-  //   //onClick={() =>
-  //   //          handleChangeValue(row.id, row.availability)
-  //   //      }
-  // };
-
   const handleFormChange = (e) => {
     console.log(e.target);
     const { name, value } = e.target;
@@ -292,18 +291,27 @@ const Users = () => {
 
   return (
     <div>
-      <AddModal
+      <UserModal
+        edit={edit}
+        open={userModalOpen}
+        handleCloseModal={handleCloseModal}
+        handleConfirmAddModal={handleConfirmAddModal}
+        handleConfirmEditModal={handleConfirmEditModal}
+        handleFormChange={handleFormChange}
+        handleOpenUserModal={handleOpenUserModal}
+      />
+      {/* <AddModal
         open={addModalOpen}
         handleCloseModal={handleCloseModal}
         handleConfirmAddModal={handleConfirmAddModal}
         handleFormChange={handleFormChange}
-      />
-      <EditModal
+      /> */}
+      {/* <EditModal
         open={editModalOpen}
         handleCloseModal={handleCloseModal}
         handleConfirmEditModal={handleConfirmEditModal}
         handleFormChange={handleFormChange}
-      />
+      /> */}
       <Backdrop open={isLoading}>
         <CircularProgress
           sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -348,8 +356,7 @@ const Users = () => {
           title="Clients"
           users={allClients}
           onDelete={onDelete}
-          handleOpenAddModal={handleOpenAddModal}
-          handleOpenEditModal={handleOpenEditModal}
+          handleOpenUserModal={handleOpenUserModal}
           totalNumber={totalClients}
           onFilterList={onFilterList}
         />
@@ -358,8 +365,7 @@ const Users = () => {
           title="Dentists "
           users={allDentists}
           onDelete={onDelete}
-          handleOpenAddModal={handleOpenAddModal}
-          handleOpenEditModal={handleOpenEditModal}
+          handleOpenUserModal={handleOpenUserModal}
           totalNumber={totalDentists}
           onFilterList={onFilterList}
         />
@@ -368,8 +374,7 @@ const Users = () => {
           title="Assistants"
           users={allAssistants}
           onDelete={onDelete}
-          handleOpenAddModal={handleOpenAddModal}
-          handleOpenEditModal={handleOpenEditModal}
+          handleOpenUserModal={handleOpenUserModal}
           totalNumber={totalAssistants}
           onFilterList={onFilterList}
         />
