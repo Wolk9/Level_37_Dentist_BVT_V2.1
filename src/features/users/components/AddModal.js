@@ -58,9 +58,9 @@ export default function AddModal(props) {
     borderRadius: "10px",
     boxShadow: 24,
     pt: 4,
-    pb: 2,
+    pb: 4,
     pl: 4,
-    pr: 4
+    pr: 1
   };
 
   return (
@@ -89,7 +89,7 @@ export default function AddModal(props) {
                     : "Assistant"}
                 </h2>
               </Grid>
-              <Grid item>
+              <Grid item sx={{ mr: "5%" }}>
                 <FormControlLabel
                   value={formValue.availability}
                   control={
@@ -97,6 +97,7 @@ export default function AddModal(props) {
                       defaultChecked
                       id="availability"
                       name="availability"
+                      value={formValue.availability}
                       onChange={handleFormChange}
                       inputProps={{ "aria-label": "availability" }}
                     />
@@ -148,7 +149,6 @@ export default function AddModal(props) {
                   name="dob"
                   type="date"
                   format="dd/MM/yyyy"
-                  defaultValue="2017-05-24"
                   sx={{ width: 220 }}
                   InputLabelProps={{
                     shrink: true
@@ -260,7 +260,7 @@ export default function AddModal(props) {
             </Grid>
             <FormControl fullWidth color="primary"></FormControl>
             <Grid container direction="row" justifyContent="flex-end">
-              <Grid item>
+              <Grid item sx={{ mr: "5%" }}>
                 <ButtonGroup>
                   <Button onClick={handleConfirmAddModal} variant="contained">
                     Confirm

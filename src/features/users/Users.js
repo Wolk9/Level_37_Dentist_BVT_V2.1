@@ -265,6 +265,7 @@ const Users = () => {
   const handleFormChange = (e) => {
     console.log(e.target);
     const { name, value } = e.target;
+    console.log(name, value);
 
     if (formValue.id === undefined) {
       console.log("geen idee!", formValue);
@@ -273,10 +274,21 @@ const Users = () => {
       dispatch(
         setFormValue({
           ...formValue,
-          id: id
+          id: id,
+          [name]: value
+        })
+      );
+    } else if (name === "dob") {
+      const newValue = new Date(value).toLocaleDateString("en-GB");
+      console.log("UK Date format:", newValue);
+      dispatch(
+        setFormValue({
+          ...formValue,
+          [name]: newValue
         })
       );
     } else {
+      console.log("id: ", formValue.id);
       dispatch(setFormValue({ ...formValue, [name]: value }));
     }
   };

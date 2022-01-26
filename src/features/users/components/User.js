@@ -45,22 +45,23 @@ const headCells = [
   { id: "last_name", label: "Last Name", minWidth: 170, align: "left" },
   {
     id: "email",
-    label: "email",
-    minWidth: 170
+    label: "Email",
+    minWidth: 170,
+    align: "right"
   },
-  { id: "phone", label: "Phone" },
-  { id: "dob", label: "Date of Birth", align: "right" },
+  { id: "phone", label: "Phone", minWidth: 170, align: "left" },
+  { id: "dob", label: "Birthday", align: "center" },
 
   {
     id: "gender",
     label: "Gender",
-    minWidth: 100,
+    minWidth: 50,
     align: "center"
   },
   {
     id: "availability",
-    label: "Sick",
-    minWidth: 100,
+    label: "Available",
+    minWidth: 50,
     align: "center"
   }
 ];
@@ -111,7 +112,7 @@ function EnhancedTableHead(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? "right" : "left"}
+            align={headCell.align}
             padding={headCell.disablePadding ? "none" : "normal"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
@@ -329,6 +330,7 @@ const User = (props) => {
                   .map((row, index) => {
                     const isItemSelected = isSelected(row.id);
                     const labelId = `enhanced-table-checkbox-${index}`;
+                    const dateToShow = {};
 
                     return (
                       <TableRow
@@ -350,12 +352,12 @@ const User = (props) => {
                             }}
                           />
                         </TableCell>
-                        <TableCell align="left">{row.first_name}</TableCell>
+                        <TableCell align="right">{row.first_name}</TableCell>
                         <TableCell align="left">{row.last_name}</TableCell>
                         <TableCell align="left">{row.email}</TableCell>
                         <TableCell align="left">{row.phone}</TableCell>
                         <TableCell align="left">{row.dob}</TableCell>
-                        <TableCell align="left">
+                        <TableCell align="center">
                           {row.gender === "male" ? (
                             <MaleIcon />
                           ) : row.gender === "female" ? (
@@ -364,7 +366,7 @@ const User = (props) => {
                             <TransgenderIcon />
                           )}
                         </TableCell>
-                        <TableCell align="left">
+                        <TableCell align="center">
                           {row.availability ? <CheckIcon /> : <SickIcon />}
                         </TableCell>
                       </TableRow>
