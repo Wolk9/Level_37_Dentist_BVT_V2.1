@@ -52,15 +52,22 @@ const Users = () => {
     dispatch(setSelected([]));
   };
 
-  const handleOpenUserModal = () => {
-    console.log(selected, selected.length);
-    if (selected !== null || undefined || []) {
+  const getSelectStatus = () => {
+    if (selected.length === 1) {
       console.log("true");
       dispatch(setEdit(true));
+      return edit;
     } else {
       console.log("false");
       dispatch(setEdit(false));
+      return edit;
     }
+  };
+
+  const handleOpenUserModal = () => {
+    console.log(selected, selected.length);
+
+    console.log(getSelectStatus(), edit);
 
     console.log(edit);
 
