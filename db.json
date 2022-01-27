@@ -1904,15 +1904,6 @@
       "availability": "sick"
     },
     {
-      "id": "b0b6ad9e-43dc-4cef-93bd-6c180b806c07",
-      "first_name": "Letizia",
-      "last_name": "Asquez",
-      "phone": "+30 623 875 4728",
-      "email": "lasquez5u@dell.com",
-      "gender": "male",
-      "availability": "sick"
-    },
-    {
       "id": "566157ed-da2d-4b20-8b46-e8141190f89c",
       "first_name": "Ingrim",
       "last_name": "Fergie",
@@ -2109,15 +2100,6 @@
       "email": "jhedworth6h@discovery.com",
       "gender": "male",
       "availability": "sick"
-    },
-    {
-      "id": "9de28408-11aa-4ba2-bc32-c785bab560f2",
-      "first_name": "Elysee",
-      "last_name": "Astronaut",
-      "phone": "+380 481 793 2469",
-      "email": "eantonat6i@ft.com",
-      "gender": "female",
-      "availability": "true"
     },
     {
       "id": "bd6f4a53-311d-4509-9e17-733b13309c55",

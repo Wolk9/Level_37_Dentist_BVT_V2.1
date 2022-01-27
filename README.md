@@ -4,7 +4,7 @@ by Martin de Bes
 
 ## Initializing
 
-### JSon Server on port 3002
+### JSON Server on port 3002
 
 yarn run json-server --watch --port 3002 db.json -s ./node_modules/json-server/public
 
