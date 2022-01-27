@@ -1,6 +1,6 @@
 ## Dentist Assignment WINC Academy
 
-# Martin de Best
+by Martin de Bes
 
 ## Initialising
 
