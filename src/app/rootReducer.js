@@ -4,9 +4,9 @@ import apptReducer from "../features/appts/apptSlice";
 import uiReducer from "../features/ui/uiSlice";
 
 const rootReducer = combineReducers({
+  ui: uiReducer,
   user: userReducer,
-  appt: apptReducer,
-  ui: uiReducer
+  appt: apptReducer
 });
 
 export default rootReducer;

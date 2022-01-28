@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
+  setEdit,
   setPage,
   setRowsPerPage,
   setOrder,
@@ -268,7 +269,16 @@ const User = (props) => {
         selected.slice(selectedIndex + 1)
       );
     }
+
     dispatch(setSelected(newSelected));
+
+    // Hereunder is determined wether a modal should appear as Add or as Edit
+
+    if (newSelected.length === 1) {
+      dispatch(setEdit(true));
+    } else {
+      dispatch(setEdit(false));
+    }
   };
 
   function handleChangePage(event, newPage) {

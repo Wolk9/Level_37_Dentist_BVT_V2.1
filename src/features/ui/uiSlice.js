@@ -38,7 +38,9 @@ export const uiSlice = createSlice({
     setUserType: (state, action) => void (state.userType = action.payload),
     setUserModalOpen: (state, action) =>
       void (state.userModalOpen = action.payload),
-    setEdit: (state, action) => void (state.edit = action.payload),
+    setEdit: (state, action) => {
+      return { ...state, edit: action.payload };
+    },
     setFormError: (state, action) => {
       console.log("formError", action.payload);
       state.formError = action.payload;

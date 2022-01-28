@@ -5,9 +5,9 @@ import uiReducer from "../features/ui/uiSlice";
 
 const store = configureStore({
   reducer: {
+    ui: uiReducer,
     users: userReducer,
-    appts: apptReducer,
-    ui: uiReducer
+    appts: apptReducer
   }
 });
 

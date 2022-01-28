@@ -15,7 +15,7 @@ import {
 
 export default function UserModal(props) {
   const {
-    userModalTypeEdit,
+    edit,
     open,
     handleCloseModal,
     handleConfirmAddModal,
@@ -58,9 +58,9 @@ export default function UserModal(props) {
               justifyContent="space-between"
               alignItems="center"
             >
-              <Grid item>
+              <Grid item sx={{ mb: "10px", ml: "5px" }}>
                 <h2 id="modal-title">
-                  {userModalTypeEdit ? "Edit " : "Add new "}
+                  {edit ? "Edit " : "Add new "}
                   {userType === "clients"
                     ? "Client"
                     : userType === "dentists"
@@ -218,7 +218,7 @@ export default function UserModal(props) {
             <Grid container direction="row" justifyContent="flex-end">
               <Grid item>
                 <ButtonGroup>
-                  {userModalTypeEdit ? (
+                  {edit ? (
                     <Button
                       onClick={handleConfirmEditModal}
                       variant="contained"

@@ -14,7 +14,6 @@ const sleep = (ms) => {
 };
 
 export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
-  await sleep(1200);
   const dentists = await fetch(URL + "dentists").then((res) => res.json());
   const assistants = await fetch(URL + "assistants").then((res) => res.json());
   const clients = await fetch(URL + "clients").then((res) => res.json());

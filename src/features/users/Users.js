@@ -57,24 +57,8 @@ const Users = () => {
     dispatch(setSelected([]));
   };
 
-  const getSelectStatus = () => {
-    if (selected.length === 1) {
-      console.log("true");
-      dispatch(setEdit(true));
-      return edit;
-    } else {
-      console.log("false");
-      dispatch(setEdit(false));
-      return edit;
-    }
-  };
-
   const handleOpenUserModal = () => {
-    console.log(selected, selected.length);
-
-    console.log(getSelectStatus(), edit);
-
-    console.log(edit);
+    console.log(selected, selected.length, userModalOpen, userType, edit);
 
     if (edit) {
       let selectedUserValues = {};
@@ -151,7 +135,9 @@ const Users = () => {
 
   const handleCloseModal = () => {
     dispatch(setUserModalOpen(false));
-    dispatch(setEdit(false));
+    if (selected.length !== 1) {
+      dispatch(setEdit(false));
+    }
     dispatch(resetFormValue());
   };
 
@@ -164,6 +150,7 @@ const Users = () => {
     console.log("onDelete", selectedIds, userType);
     dispatch(deleteUser({ selectedIds, userType }));
     dispatch(setSelected([]));
+    dispatch(setEdit(false));
   };
 
   const validate = () => {
@@ -270,15 +257,17 @@ const Users = () => {
     dispatch(resetFormValue());
   };
 
+  //TODO: uitzoeken waarom availability wordt behandeld als string en niet als boolean (ook UserModal:71)
+
   const handleFormChange = (e) => {
     console.log(e.target);
     const { name, value } = e.target;
     console.log(name, value);
 
     if (formValue.id === undefined) {
-      console.log("geen idee!", formValue);
+      //    console.log("geen idee!", formValue);
       const id = uuidv4();
-      console.log("nu wel: " + id);
+      //      console.log("nu wel: " + id);
       dispatch(
         setFormValue({
           ...formValue,
@@ -288,7 +277,6 @@ const Users = () => {
       );
     } else if (name === "dob") {
       const newValue = new Date(value).toLocaleDateString("en-GB");
-      console.log("UK Date format:", newValue);
       dispatch(
         setFormValue({
           ...formValue,
@@ -310,20 +298,7 @@ const Users = () => {
         handleConfirmAddModal={handleConfirmAddModal}
         handleConfirmEditModal={handleConfirmEditModal}
         handleFormChange={handleFormChange}
-        handleOpenUserModal={handleOpenUserModal}
       />
-      {/* <AddModal
-        open={addModalOpen}
-        handleCloseModal={handleCloseModal}
-        handleConfirmAddModal={handleConfirmAddModal}
-        handleFormChange={handleFormChange}
-      /> */}
-      {/* <EditModal
-        open={editModalOpen}
-        handleCloseModal={handleCloseModal}
-        handleConfirmEditModal={handleConfirmEditModal}
-        handleFormChange={handleFormChange}
-      /> */}
       <Backdrop open={isLoading}>
         <CircularProgress
           sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
