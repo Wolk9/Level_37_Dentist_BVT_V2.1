@@ -100,9 +100,9 @@ You will get function calls but the implementation of the function still has to 
 ### Bonus
 
 - Treatment types:
-  -- each dentist has a set of skills. E.g. pulling teeth, dental fillings, surgery, etc.
-  -- not every dentist has each skill.
-  -- each appointment has one treatment type.
-  -- in the calendar, view you cannot see the treatment type.
-  -- in the day view, you can see the treatment type.
-  -- Make a working form and buttons for all operations.
+  - each dentist has a set of skills. E.g. pulling teeth, dental fillings, surgery, etc.
+  - not every dentist has each skill.
+  - each appointment has one treatment type.
+  - in the calendar, view you cannot see the treatment type.
+  - in the day view, you can see the treatment type.
+  - Make a working form and buttons for all operations.
