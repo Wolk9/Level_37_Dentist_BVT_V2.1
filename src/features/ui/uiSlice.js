@@ -3,14 +3,8 @@ import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
 const uiAdapter = createEntityAdapter({});
 
 const initialState = uiAdapter.getInitialState({
-  userModalOpen: false,
   edit: false,
-  userType: "clients",
-  page: 0,
-  rowsPerPage: 10,
-  order: "asc",
-  orderBy: "last_name",
-  selected: [],
+  formError: {},
   formValue: {
     id: undefined,
     availability: true,
@@ -21,7 +15,13 @@ const initialState = uiAdapter.getInitialState({
     email: "",
     dob: ""
   },
-  formError: {}
+  page: 0,
+  order: "asc",
+  orderBy: "last_name",
+  rowsPerPage: 10,
+  selected: [],
+  userModalOpen: false,
+  userType: "clients"
 });
 
 export const uiSlice = createSlice({

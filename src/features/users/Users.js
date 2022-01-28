@@ -1,29 +1,29 @@
 import React, { useEffect, memo } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import User from "../users/components/User";
 //import AddModal from "./components/AddModal";
 //import EditModal from "./components/EditModal";
 import UserModal from "./components/UserModal";
 import { Backdrop, Badge, Button, CircularProgress } from "@mui/material";
 import {
-  setUserModalOpen,
   setEdit,
-  setSelected,
-  setUserType,
-  setPage,
+  setFormError,
   setFormValue,
   resetFormValue,
-  setFormError
+  setPage,
+  setSelected,
+  setUserModalOpen,
+  setUserType
 } from "../ui/uiSlice";
 import {
+  addUser,
+  deleteUser,
   fetchUsers,
+  setDeleting,
+  updateUser,
   assistantsSelectors,
   dentistsSelectors,
-  clientsSelectors,
-  deleteUser,
-  setDeleting,
-  addUser,
-  updateUser
+  clientsSelectors
 } from "../users/userSlice";
 import { v4 as uuidv4 } from "uuid";
 
@@ -35,12 +35,17 @@ const Users = () => {
   const allDentists = useSelector(dentistsSelectors.selectAll);
   const totalClients = useSelector(clientsSelectors.selectTotal);
   const allClients = useSelector(clientsSelectors.selectAll);
-  const userType = useSelector((state) => state.ui.userType);
-  const userModalOpen = useSelector((state) => state.ui.userModalOpen);
   const isLoading = useSelector((state) => state.users.loading);
-  const formValue = useSelector((state) => state.ui.formValue);
-  const selected = useSelector((state) => state.ui.selected);
-  const edit = useSelector((state) => state.ui.edit);
+
+  // const userType = useSelector((state) => state.ui.userType);
+  // const userModalOpen = useSelector((state) => state.ui.userModalOpen);
+  // const formValue = useSelector((state) => state.ui.formValue);
+  // const selected = useSelector((state) => state.ui.selected);
+  // const edit = useSelector((state) => state.ui.edit);
+
+  const { edit, formValue, selected, userModalOpen, userType } = useSelector(
+    (state) => state.ui
+  );
 
   useEffect(() => {
     dispatch(fetchUsers());
