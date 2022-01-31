@@ -1,8 +1,6 @@
-import React, { useEffect, memo } from "react";
-import { useDispatch, useSelector, shallowEqual } from "react-redux";
+import React, { memo } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import User from "../users/components/User";
-//import AddModal from "./components/AddModal";
-//import EditModal from "./components/EditModal";
 import UserModal from "./components/UserModal";
 import { Backdrop, Badge, Button, CircularProgress } from "@mui/material";
 import {
@@ -18,38 +16,25 @@ import {
 import {
   addUser,
   deleteUser,
-  fetchUsers,
   setDeleting,
-  updateUser,
-  assistantsSelectors,
-  dentistsSelectors,
-  clientsSelectors
+  updateUser
 } from "../users/userSlice";
 import { v4 as uuidv4 } from "uuid";
 
-const Users = () => {
+const Users = (props) => {
+  const {
+    totalAssistants,
+    totalDentists,
+    totalClients,
+    allAssistants,
+    allDentists,
+    allClients,
+    isLoading
+  } = props;
   const dispatch = useDispatch();
-  const totalAssistants = useSelector(assistantsSelectors.selectTotal);
-  const allAssistants = useSelector(assistantsSelectors.selectAll);
-  const totalDentists = useSelector(dentistsSelectors.selectTotal);
-  const allDentists = useSelector(dentistsSelectors.selectAll);
-  const totalClients = useSelector(clientsSelectors.selectTotal);
-  const allClients = useSelector(clientsSelectors.selectAll);
-  const isLoading = useSelector((state) => state.users.loading);
-
-  // const userType = useSelector((state) => state.ui.userType);
-  // const userModalOpen = useSelector((state) => state.ui.userModalOpen);
-  // const formValue = useSelector((state) => state.ui.formValue);
-  // const selected = useSelector((state) => state.ui.selected);
-  // const edit = useSelector((state) => state.ui.edit);
-
   const { edit, formValue, selected, userModalOpen, userType } = useSelector(
     (state) => state.ui
   );
-
-  useEffect(() => {
-    dispatch(fetchUsers());
-  }, [dispatch]);
 
   const handleUserType = (e) => {
     dispatch(setUserType(e.target.value));
@@ -305,7 +290,7 @@ const Users = () => {
         />
       </Backdrop>
 
-      <Badge badgevalue={totalClients} max={1000} color="error">
+      <Badge badgevalue={totalClients} max={1000} color="secondary">
         <Button
           name="userType"
           value="clients"
@@ -316,7 +301,7 @@ const Users = () => {
           Clients
         </Button>
       </Badge>
-      <Badge badgevalue={totalDentists} color="error">
+      <Badge badgevalue={totalDentists} color="secondary">
         <Button
           name="userType"
           value="dentists"
@@ -327,7 +312,7 @@ const Users = () => {
           Dentists
         </Button>
       </Badge>
-      <Badge badgevalue={totalAssistants} color="error">
+      <Badge badgevalue={totalAssistants} color="secondary">
         <Button
           name="userType"
           value="assistants"

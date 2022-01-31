@@ -1,5 +1,5 @@
 import React from "react";
-import Appts from "./features/appts/Appts";
+import Appts from "./features/appts/components/Appts";
 
 export default () => (
   <div>

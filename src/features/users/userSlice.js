@@ -7,12 +7,6 @@ import {
 
 const URL = "http://localhost:3002/";
 
-const sleep = (ms) => {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-};
-
 export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
   const dentists = await fetch(URL + "dentists").then((res) => res.json());
   const assistants = await fetch(URL + "assistants").then((res) => res.json());

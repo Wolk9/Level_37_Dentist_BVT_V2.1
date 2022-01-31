@@ -11,10 +11,12 @@ export const fetchAppts = createAsyncThunk("users/fetchAppts", async () => {
   return { appts };
 });
 
-const apptAdapter = createEntityAdapter({
-  selectId: (appt) => appt.id,
-  sortComparer: (a, b) => a.date.compareTo(b.date)
-});
+const apptAdapter = createEntityAdapter();
+
+// {
+//  selectId: (appt) => appt.id,
+//  sortComparer: (a, b) => a.date.compareTo(b.date)
+// }
 
 const initialState = apptAdapter.getInitialState({
   loading: false,
@@ -43,6 +45,8 @@ export const apptSlice = createSlice({
     }
   }
 });
+
+export const apptsSelector = apptAdapter.getSelectors((state) => state.appts);
 
 export const { addAppt, removeAppt } = apptSlice.actions;
 export default apptSlice.reducer;

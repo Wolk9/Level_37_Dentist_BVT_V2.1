@@ -664,7 +664,7 @@
       "phone": "+31 406 697 80467",
       "email": "babsolom21@list-manage.com",
       "gender": "female",
-      "availability": true,
+      "availability": "true",
       "dob": "12/1/1973"
     },
     {
@@ -2384,7 +2384,7 @@
       "first_name": "Martin",
       "last_name": "de Bes",
       "email": "martin.de.bes@me.com",
-      "dob": "18/7/1971"
+      "dob": "18/07/1971"
     },
     {
       "id": "13f1f4f8-4baf-4ffe-8d9e-7b7f77758e55",
@@ -2404,7 +2404,7 @@
       "first_name": "F",
       "last_name": "Bennis",
       "email": "Fleurbennis@live.nl",
-      "dob": ""
+      "dob": "12/08/1976"
     },
     {
       "id": "19065621-8cb6-4bd7-a4f2-43c2fb35de76",
@@ -2413,7 +2413,7 @@
       "phone": "+31399132345",
       "first_name": "Piet",
       "last_name": "Puk",
-      "email": "",
+      "email": "piet@puk.de",
       "dob": "1893-09-21"
     },
     {
