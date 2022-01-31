@@ -1,7 +1,7 @@
 import React from "react";
 import AppointmentInMonth from "./AppointmentInMonth";
 
-// export the appontments per day for the Calander component:
+// export the appointments per day for the Calander component:
 
 export default ({ appointments }) => {
   const appointmentsJSX = appointments.map(({ time, patient }, index) => (

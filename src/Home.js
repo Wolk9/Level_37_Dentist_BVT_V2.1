@@ -4,9 +4,9 @@ import Appts from "./features/appts/components/Appts";
 
 export default () => (
   <div>
-    <Badge variant="dot" badgevalue={10}>
+    {/* <Badge variant="dot" badgevalue={10}>
       <Button variant="outlined">test</Button>
-    </Badge>
+    </Badge> */}
     <Appts />
   </div>
 );

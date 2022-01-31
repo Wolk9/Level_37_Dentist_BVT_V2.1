@@ -5,9 +5,11 @@
 }
 
 .calendarview .header {
-  background-color: aquamarine;
+  background-color: deepskyblue;
   font-weight: bold;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
+  border-radius: 5px 5px 0px 0px;
+  text-align: center
 }
 
 .calendarview .header div {
@@ -16,14 +18,16 @@
 
 .calendarview {
   padding: 0.5rem;
-  font-size: 1rem;
+  font-size: 0.9rem;
+  line-height: 1.7rem;
 }
 
 .calendarview .day {
   margin-bottom: 0.5rem;
-  border: 1px solid lightblue;
+  border: 1px solid deepskyblue;
   padding: 0.5rem;
-  background-color: lightyellow;
+  background-color: #ccc;
+  border-radius: 0px
 }
 
 .calendarview .patient {
@@ -31,5 +35,7 @@
 }
 
 .calendarview .time {
-  color: yellowgreen;
+  color: #444;
+  background-color: lightblue;
+  padding: 5px;
 }
