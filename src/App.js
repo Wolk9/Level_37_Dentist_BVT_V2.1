@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Home from "./Home";
 import Calendar from "./Calendar";
 import Day from "./Day";
+import UserManagement from "./UserManagement";
 
 import generateRandomAppointments from "./utils";
 
@@ -43,10 +44,16 @@ const App = () => (
               <li>
                 <Link to="/day">Day view</Link>
               </li>
+              <li>
+                <Link to="/usermanagement">User Management</Link>
+              </li>
             </ul>
           </nav>
           <main>
             <Switch>
+              <Route path="/usermanagement">
+                <UserManagement />
+              </Route>
               <Route path="/calendar">
                 <Calendar appointments={appointments} />
               </Route>

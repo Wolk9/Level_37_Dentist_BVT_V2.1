@@ -1,8 +1,8 @@
 import React from "react";
-import Appts from "./features/appts/Appts";
+import Users from "./features/users/Users";
 
 export default () => (
   <div>
-    <Appts />
+    <Users />
   </div>
 );
