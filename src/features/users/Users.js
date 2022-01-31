@@ -290,33 +290,38 @@ const Users = (props) => {
         />
       </Backdrop>
 
-      <Badge badgevalue={totalClients} max={1000} color="secondary">
+      <Badge
+        badgevalue={totalClients}
+        max={300}
+        color="secondary"
+        variant="standard"
+      >
         <Button
           name="userType"
           value="clients"
-          variant="contained"
+          variant="outlined"
           onClick={handleUserType}
           sx={{ m: 1 }}
         >
           Clients
         </Button>
       </Badge>
-      <Badge badgevalue={totalDentists} color="secondary">
+      <Badge badgevalue={totalDentists} color="secondary" variant="standard">
         <Button
           name="userType"
           value="dentists"
-          variant="contained"
+          variant="outlined"
           onClick={handleUserType}
           sx={{ m: 1 }}
         >
           Dentists
         </Button>
       </Badge>
-      <Badge badgevalue={totalAssistants} color="secondary">
+      <Badge badgevalue={totalAssistants} color="secondary" variant="standard">
         <Button
           name="userType"
           value="assistants"
-          variant="contained"
+          variant="outlined"
           onClick={handleUserType}
           sx={{ m: 1 }}
         >
