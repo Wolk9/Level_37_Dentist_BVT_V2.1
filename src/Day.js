@@ -10,7 +10,7 @@ import {
 
 import PropTypes from "prop-types";
 
-function ConstructAppt(props) {
+const ConstructAppt = (props) => {
   console.log(props);
   const client = useSelector((state) =>
     clientsSelectors.selectById(state, props.client_id)
@@ -24,26 +24,27 @@ function ConstructAppt(props) {
 
   console.log(client, dentist, assistant);
   return { client, dentist, assistant };
-}
+};
 
-function Day(props) {
+const Day = (props) => {
   const { appointments, hour } = props;
-  console.log(appointments, appointments.length);
-  const appts = appointments.forEach((appointment) => {
-    console.log("forEach", appointment);
-    const apptPeople = ConstructAppt(appointment);
-    console.log(apptPeople);
-    return apptPeople;
-  });
-
+  console.log(props, appointments, appointments.length);
   return (
-    <div>
-      <AppointmentInDay appts={appts} hour={hour} />
-    </div>
+    <ul>
+      {appointments.map((appointment) => {
+        return (
+          <AppointmentInDay
+            key={appointment.id}
+            appt={ConstructAppt(appointment)}
+            hour={hour}
+          />
+        );
+      })}
+    </ul>
   );
-}
+};
 
-Day.propTypes = { appointment: PropTypes.object };
+// Day.propTypes = { appointment: PropTypes.object };
 
 export default Day;
 
