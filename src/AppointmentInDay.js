@@ -1,12 +1,18 @@
 import React from "react";
 
-const format_time = (time) => (time < 10 ? `0${time}:00u` : `${time}:00u`);
+const format_time = (hour) => (hour < 10 ? `0${hour}:00u` : `${hour}:00u`);
 
-export default ({ time, patient, dentist, assistant }) => (
-  <li className="appointment">
-    <div className="time">{format_time(time)}</div>
-    <div className="patient">Client: {patient}</div>
-    <div className="dentist">Dentist: {dentist}</div>
-    <div className="assistant">Assistant: {assistant}</div>
-  </li>
-);
+const AppointmentInDay = (props) => {
+  const { appts, hour } = props;
+  console.log(hour, appts);
+  return (
+    <li className="appointment">
+      <div className="time">{format_time(hour)}</div>
+      <div className="client">Client: {appts.client.first_name}</div>
+      <div className="dentist">Dentist: {appts.dentist.first_name}</div>
+      <div className="assistant">Assistant: {appts.assistant.first_name}</div>
+    </li>
+  );
+};
+
+export default AppointmentInDay;

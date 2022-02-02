@@ -6,6 +6,7 @@ import {
   dentistsSelectors,
   clientsSelectors
 } from "./features/users/userSlice";
+import { fetchAppts, apptsSelector } from "./features/appts/apptSlice";
 import "./App.css";
 
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
@@ -14,8 +15,6 @@ import Home from "./Home";
 import Calendar from "./Calendar";
 import Day from "./Day";
 import UserManagement from "./UserManagement";
-
-import generateRandomAppointments from "./utils";
 
 import { ThemeProvider, createTheme } from "@mui/material";
 import * as dayjs from "dayjs";
@@ -31,7 +30,7 @@ const darkTheme = createTheme({
 
 dayjs.locale("nl");
 
-const appointments = generateRandomAppointments(70);
+// const appointments = generateRandomAppointments(70);
 
 const App = () => {
   const dispatch = useDispatch();
@@ -42,10 +41,14 @@ const App = () => {
   const totalClients = useSelector(clientsSelectors.selectTotal);
   const allClients = useSelector(clientsSelectors.selectAll);
   const isLoading = useSelector((state) => state.users.loading);
+  const allAppts = useSelector(apptsSelector.selectAll);
 
   useEffect(() => {
     dispatch(fetchUsers());
+    dispatch(fetchAppts());
   }, [dispatch]);
+
+  console.log(allAppts);
 
   return (
     <div>
@@ -83,11 +86,11 @@ const App = () => {
                     />
                   </Route>
                   <Route path="/calendar">
-                    <Calendar appointments={appointments} />
+                    <Calendar appointments={allAppts} />
                   </Route>
                   <Route path="/day">
                     <Day
-                      appointments={appointments.filter((app) => app.day === 1)}
+                      appointments={allAppts.filter((app) => app.day === 2)}
                     />
                   </Route>
                   <Route path="/">

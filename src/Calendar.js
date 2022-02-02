@@ -1,13 +1,11 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
 import "./Calendar.css";
 import DayInMonth from "./DayInMonth";
-import { apptsSelector } from "./features/appts/apptSlice.js";
 
 const sortByTime = (a, b) => {};
 
 const divideByDay = (appointments) => {
-  const appointmentsByDay = {};
+  const appointmentsByDay = [];
   appointments.forEach((appointment) => {
     const day = appointment.day;
     if (!appointmentsByDay.hasOwnProperty(day)) {
@@ -23,8 +21,7 @@ const divideByDay = (appointments) => {
 // Export Calender for App
 
 export default ({ appointments }) => {
-  const allAppts = useSelector(apptsSelector.selectAll);
-  console.log(allAppts);
+  console.log(appointments);
   const appointmentsByDay = divideByDay(appointments);
 
   const daysInMonthJSX = Object.values(appointmentsByDay).map(

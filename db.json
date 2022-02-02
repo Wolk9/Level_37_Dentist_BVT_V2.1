@@ -2449,20 +2449,20 @@
   ],
   "appts": [
     {
-      "id": 501,
-      "date": "01012022",
+      "id": "c643b905-e9d5-44d5-8ee5-d449cf371037",
+      "day": 2,
       "hour": 8,
-      "client_id": 1,
-      "dentist_id": 102,
-      "assistant_id": 201
+      "client_id": "8052835d-45d4-4725-a649-4b9ed7e2e376",
+      "dentist_id": "60e894ff-5e18-4b00-8f7d-2bde366543f8",
+      "assistant_id": "19065621-8cb6-4bd7-a4f2-43c2fb35de76"
     },
     {
-      "id": 502,
-      "date": "01022022",
+      "id": "d118bb8f-a482-4f2d-9be5-eb6583246f10",
+      "day": 2,
       "hour": 9,
-      "client_id": 1,
-      "dentist_id": 103,
-      "assistant_id": 201
+      "client_id": "ea44d25b-0d30-47f3-abf9-90570b7dff4c",
+      "dentist_id": "41f6b217-801c-4761-9478-41abfebc0eb0",
+      "assistant_id": "19065621-8cb6-4bd7-a4f2-43c2fb35de76"
     }
   ]
 }

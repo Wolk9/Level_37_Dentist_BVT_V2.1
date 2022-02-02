@@ -8,20 +8,16 @@ const URL = "http://localhost:3002/";
 
 export const fetchAppts = createAsyncThunk("users/fetchAppts", async () => {
   const appts = await fetch(URL + "appts").then((res) => res.json());
+  console.log(appts);
   return { appts };
 });
 
-const apptAdapter = createEntityAdapter();
-
-// {
-//  selectId: (appt) => appt.id,
-//  sortComparer: (a, b) => a.date.compareTo(b.date)
-// }
-
-const initialState = apptAdapter.getInitialState({
-  loading: false,
-  appts: apptAdapter.getInitialState()
+const apptAdapter = createEntityAdapter({
+  selectId: (entity) => entity.id
+  //sortComparer: (a, b) => a.date.compareTo(b.date)
 });
+
+const initialState = apptAdapter.getInitialState({});
 
 export const apptSlice = createSlice({
   name: "appt",
@@ -37,8 +33,9 @@ export const apptSlice = createSlice({
       state.loading = true;
     },
     [fetchAppts.fulfilled](state, { payload }) {
+      console.log(payload.appts);
       state.loading = false;
-      apptAdapter.setAll(state.appts, payload.appts);
+      apptAdapter.setAll(state, payload.appts);
     },
     [fetchAppts.rejected](state) {
       state.loading = false;
