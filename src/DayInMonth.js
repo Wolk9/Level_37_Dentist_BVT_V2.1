@@ -10,6 +10,7 @@ import { Tooltip } from "@mui/material";
 
 const ConstructActors = (props) => {
   console.log(props);
+
   const client = useSelector((state) =>
     clientsSelectors.selectById(state, props.client_id)
   );
@@ -19,7 +20,6 @@ const ConstructActors = (props) => {
   const assistant = useSelector((state) =>
     assistantsSelectors.selectById(state, props.assistant_id)
   );
-
   console.log(client, dentist, assistant);
   return { client, dentist, assistant };
 };
@@ -29,14 +29,26 @@ const ConstructActors = (props) => {
 const DayInMonth = (props) => {
   const { appointments } = props;
   console.log(appointments);
-  const appointmentsJSX = appointments.map((appointments) => (
-    <AppointmentInMonth
-      appt={appointments}
-      actors={ConstructActors(appointments)}
-      key={appointments.id}
-    />
-  ));
-  return <div className="day">{appointmentsJSX}</div>;
+  if (appointments.length === 1) {
+    return (
+      <div className="day">
+        <AppointmentInMonth
+          appt={appointments}
+          key={appointments.key}
+          actors={{ client: undefined }}
+        />
+      </div>
+    );
+  } else {
+    const appointmentsJSX = appointments.map((appointment) => (
+      <AppointmentInMonth
+        appt={appointment}
+        actors={ConstructActors(appointment)}
+        key={appointment.key}
+      />
+    ));
+    return <div className="day">{appointmentsJSX}</div>;
+  }
 };
 
 export default DayInMonth;
