@@ -27,11 +27,22 @@
   border: 1px solid deepskyblue;
   padding: 0.5rem;
   background-color: #ccc;
-  border-radius: 0px
+  border-radius: 0px;
+  min-height: 100px;
 }
 
 .calendarview .patient {
   margin-left: 0.5rem;
+}
+
+.calendarview .date {
+  border-radius: 10px;
+  width: 20px;
+  height: 20px;
+  background-color: deepskyblue;
+  color: white;
+  fond-weight: bold;
+
 }
 
 .calendarview .time {

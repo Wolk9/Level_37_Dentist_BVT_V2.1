@@ -32,6 +32,9 @@ const DayInMonth = (props) => {
   if (appointments.length === 1) {
     return (
       <div className="day">
+        <span className="date">
+          <span>day</span>
+        </span>
         <AppointmentInMonth
           appt={appointments}
           key={appointments.key}
@@ -47,7 +50,12 @@ const DayInMonth = (props) => {
         key={appointment.key}
       />
     ));
-    return <div className="day">{appointmentsJSX}</div>;
+    return (
+      <div className="day">
+        <span className="date">day</span>
+        {appointmentsJSX}
+      </div>
+    );
   }
 };
 

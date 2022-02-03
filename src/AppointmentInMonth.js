@@ -13,7 +13,7 @@ const AppointmentInMonth = ({ actors, appt }) => {
   console.log(appt);
   if (actors.client === undefined) {
     return (
-      <div className="appointment">
+      <div>
         {/* <span className="day">{appt.day}</span>
         <br /> */}
       </div>
@@ -32,8 +32,6 @@ const AppointmentInMonth = ({ actors, appt }) => {
       actors.assistant.last_name;
     return (
       <div className="appointment">
-        <span className="day">{appt.day}</span>
-        <br />
         <span className="time">{format_time(appt.hour)}</span>
         <span className="patient">{client}</span>
       </div>
