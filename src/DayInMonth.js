@@ -6,7 +6,7 @@ import {
   dentistsSelectors,
   clientsSelectors
 } from "./features/users/userSlice";
-import { Tooltip } from "@mui/material";
+import { ListItem, ListItemAvatar, Avatar, Tooltip } from "@mui/material";
 
 const ConstructActors = (props) => {
   console.log(props);
@@ -32,9 +32,22 @@ const DayInMonth = (props) => {
   if (appointments.length === 1) {
     return (
       <div className="day">
-        <span className="date">
-          <span>day</span>
-        </span>
+        <ListItem>
+          <ListItemAvatar>
+            <Avatar
+              sx={{
+                bgcolor: "deepskyblue",
+                color: "white",
+                fontSize: 12,
+                fontWeight: "bold",
+                mt: -1,
+                ml: -1
+              }}
+            >
+              day
+            </Avatar>
+          </ListItemAvatar>
+        </ListItem>
         <AppointmentInMonth
           appt={appointments}
           key={appointments.key}
@@ -52,7 +65,22 @@ const DayInMonth = (props) => {
     ));
     return (
       <div className="day">
-        <span className="date">day</span>
+        <ListItem>
+          <ListItemAvatar>
+            <Avatar
+              sx={{
+                bgcolor: "deepskyblue",
+                color: "white",
+                fontSize: 12,
+                fontWeight: "bold",
+                mt: -1,
+                ml: -1
+              }}
+            >
+              day
+            </Avatar>
+          </ListItemAvatar>
+        </ListItem>
         {appointmentsJSX}
       </div>
     );
