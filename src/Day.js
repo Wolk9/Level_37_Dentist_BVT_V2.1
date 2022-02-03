@@ -7,10 +7,10 @@ import {
   dentistsSelectors,
   clientsSelectors
 } from "./features/users/userSlice";
-
 import PropTypes from "prop-types";
+import { List } from "@mui/material";
 
-const ConstructAppt = (props) => {
+const ConstructActors = (props) => {
   console.log(props);
   const client = useSelector((state) =>
     clientsSelectors.selectById(state, props.client_id)
@@ -30,53 +30,27 @@ const Day = (props) => {
   const { appointments, hour } = props;
   console.log(props, appointments, appointments.length);
   return (
-    <ul>
+    <List
+      sx={{
+        width: "80%",
+        maxWidth: 400,
+        bgcolor: "background.paper",
+        color: "deepskyblue"
+      }}
+    >
       {appointments.map((appointment) => {
         return (
           <AppointmentInDay
             key={appointment.id}
-            appt={ConstructAppt(appointment)}
-            hour={hour}
+            appt={ConstructActors(appointment)}
+            hour={appointment.hour}
           />
         );
       })}
-    </ul>
+    </List>
   );
 };
 
-// Day.propTypes = { appointment: PropTypes.object };
+Day.propTypes = { appointment: PropTypes.object };
 
 export default Day;
-
-// const Day2 = (props) => {
-//   const { appointments } = props;
-//   console.log(appointments);
-
-//   // let appointmentJSX = appointments.map(
-//   //   ({ hour, client_id, assistant_id, dentist_id }, index) => {
-//   //     const selectedClient = useSelector((state) =>
-//   //       clientsSelectors.selectById({ state: state, id: client_id })
-//   //     );
-//   //     const selectedDentist = useSelector((state) =>
-//   //       dentistsSelectors.selectById({ state: state, id: dentist_id })
-//   //     );
-//   //     const selectedAssistant = useSelector((state) =>
-//   //       assistantsSelectors.selectById({ state: state, id: assistant_id })
-//   //     );
-
-//   return (
-//     <div>
-//       <ul className="dayview">
-//         <AppointmentInDay
-//           hour={hour}
-//           client={selectedClient}
-//           dentist={selectedDentist}
-//           assistant={selectedAssistant}
-//           key={index}
-//         />
-//       </ul>
-//     </div>
-//   );
-// };
-
-// export default Day2;

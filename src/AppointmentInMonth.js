@@ -1,4 +1,5 @@
 import React from "react";
+import { Tooltip } from "@mui/material";
 
 // Here the time is given a preceding zero if the time is not 10, 11 or 12.
 
@@ -6,9 +7,25 @@ const format_time = (time) => (time < 10 ? `0${time}.00` : `${time}.00`);
 
 //  export the record with time and patient for DayInMonth:
 
-export default ({ time, patient }) => (
-  <div className="appointment">
-    <span className="time">{format_time(time)}</span>
-    <span className="patient">{patient}</span>
-  </div>
-);
+const AppointmentInMonth = ({ actors, appt }) => {
+  console.log(actors, appt);
+  const client = actors.client.first_name + " " + actors.client.last_name;
+  const otherActors =
+    "Dentist:" +
+    actors.dentist.first_name +
+    " " +
+    actors.dentist.last_name +
+    "<br>" +
+    "Assistant:" +
+    actors.assistant.first_name +
+    " " +
+    actors.assistant.last_name;
+  return (
+    <div className="appointment">
+      <span className="time">{format_time(appt.hour)}</span>
+      <span className="patient">{client}</span>
+    </div>
+  );
+};
+
+export default AppointmentInMonth;

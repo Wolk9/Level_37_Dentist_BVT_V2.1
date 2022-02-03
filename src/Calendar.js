@@ -2,8 +2,6 @@ import React from "react";
 import "./Calendar.css";
 import DayInMonth from "./DayInMonth";
 
-const sortByTime = (a, b) => {};
-
 const divideByDay = (appointments) => {
   const appointmentsByDay = [];
   appointments.forEach((appointment) => {
@@ -20,15 +18,20 @@ const divideByDay = (appointments) => {
 
 // Export Calender for App
 
+//TODO:  Each child in a list should have a unique "key" prop.
+
 export default ({ appointments }) => {
   console.log(appointments);
   const appointmentsByDay = divideByDay(appointments);
+  console.log(appointmentsByDay);
 
   const daysInMonthJSX = Object.values(appointmentsByDay).map(
     (appointmentsInDay, index) => (
-      <DayInMonth appointments={appointmentsInDay} key={index} />
+      <DayInMonth key={index} appointments={appointmentsInDay} />
     )
   );
+
+  console.log(daysInMonthJSX);
 
   return (
     <div className="calendarview">
