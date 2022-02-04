@@ -7,6 +7,7 @@ import {
   clientsSelectors
 } from "./features/users/userSlice";
 import { fetchAppts, apptsSelector } from "./features/appts/apptSlice";
+import { setApptModalOpen, setApptToEdit } from "./features/ui/uiSlice";
 import "./App.css";
 
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
@@ -16,8 +17,8 @@ import Home from "./Home";
 import Calendar from "./Calendar";
 import Day from "./Day";
 import UserManagement from "./UserManagement";
-
-import { ThemeProvider, createTheme } from "@mui/material";
+import ApptModal from "./features/appts/components/ApptModal";
+import { ThemeProvider, createTheme, Modal } from "@mui/material";
 import * as dayjs from "dayjs";
 import "dayjs/locale/nl";
 import DateAdapter from "@mui/lab/AdapterDayjs";
@@ -43,13 +44,31 @@ const App = () => {
   const allClients = useSelector(clientsSelectors.selectAll);
   const isLoading = useSelector((state) => state.users.loading);
   const allAppts = useSelector(apptsSelector.selectAll);
+  const apptModalOpen = useSelector((state) => state.ui.apptModalOpen);
 
   useEffect(() => {
     dispatch(fetchUsers());
     dispatch(fetchAppts());
   }, [dispatch]);
 
+  const handleClickOnAppt = (e) => {
+    console.log("appt id: ", e);
+    dispatch(setApptModalOpen(true));
+    dispatch(setApptToEdit(e.appt_id));
+  };
+
+  const handleCancelApptEdit = (e) => {
+    console.log(e.target);
+    dispatch(setApptModalOpen(false));
+  };
+
+  const handleApptModelClose = (e) => {
+    console.log(e.target);
+    dispatch(setApptModalOpen(false));
+  };
+
   console.log(allAppts);
+  console.log(apptModalOpen);
 
   return (
     <div>
@@ -59,6 +78,9 @@ const App = () => {
             <div>
               <MainNavigation />
               <main>
+                <Modal open={apptModalOpen} onClose={handleApptModelClose}>
+                  <ApptModal purpose="edit" />
+                </Modal>
                 <Switch>
                   <Route path="/usermanagement">
                     <UserManagement
@@ -72,11 +94,18 @@ const App = () => {
                     />
                   </Route>
                   <Route path="/calendar">
-                    <Calendar appointments={allAppts} />
+                    <Calendar
+                      appointments={allAppts}
+                      handleClickOnAppt={handleClickOnAppt}
+                      handleCancelApptEdit={handleCancelApptEdit}
+                    />
                   </Route>
                   <Route path="/day">
                     <Day
-                      appointments={allAppts.filter((app) => app.day === 2)}
+                      appointments={allAppts}
+                      handleClickOnAppt={handleClickOnAppt}
+                      handleCancelApptEdit={handleCancelApptEdit}
+                      // appointments={allAppts.filter((app) => app.day === 2)}
                     />
                   </Route>
                   <Route path="/">

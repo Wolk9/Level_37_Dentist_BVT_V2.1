@@ -21,7 +21,9 @@ const initialState = uiAdapter.getInitialState({
   rowsPerPage: 10,
   selected: [],
   userModalOpen: false,
-  userType: "clients"
+  userType: "clients",
+  apptModalOpen: false,
+  apptToEdit: ""
 });
 
 export const uiSlice = createSlice({
@@ -39,7 +41,13 @@ export const uiSlice = createSlice({
     setUserModalOpen: (state, action) =>
       void (state.userModalOpen = action.payload),
     setEdit: (state, action) => {
-      return { ...state, edit: action.payload };
+      return { ...state, apptModalOpen: action.payload };
+    },
+    setApptModalOpen: (state, action) => {
+      return { ...state, apptModalOpen: action.payload };
+    },
+    setApptToEdit: (state, action) => {
+      return { ...state, apptToEdit: action.payload };
     },
     setFormError: (state, action) => {
       console.log("formError", action.payload);
@@ -67,6 +75,8 @@ export const {
   setOrderBy,
   setSelected,
   setUserModalOpen,
+  setApptModalOpen,
+  setApptToEdit,
   setEdit,
   setFormValue,
   resetFormValue,

@@ -26,9 +26,12 @@ const ConstructActors = (props) => {
 
 // export the appointments per day for the Calander component:
 
+let day = 0;
+
 const DayInMonth = (props) => {
-  const { appointments } = props;
+  const { appointments, handleClickOnAppt } = props;
   console.log(appointments);
+  day = appointments[0] + 1;
   if (appointments.length === 1) {
     return (
       <div className="day">
@@ -38,13 +41,13 @@ const DayInMonth = (props) => {
               sx={{
                 bgcolor: "deepskyblue",
                 color: "white",
-                fontSize: 12,
+                fontSize: 14,
                 fontWeight: "bold",
                 mt: -1,
                 ml: -1
               }}
             >
-              day
+              {day}
             </Avatar>
           </ListItemAvatar>
         </ListItem>
@@ -61,8 +64,10 @@ const DayInMonth = (props) => {
         appt={appointment}
         actors={ConstructActors(appointment)}
         key={appointment.key}
+        handleClickOnAppt={handleClickOnAppt}
       />
     ));
+
     return (
       <div className="day">
         <ListItem>
@@ -71,13 +76,13 @@ const DayInMonth = (props) => {
               sx={{
                 bgcolor: "deepskyblue",
                 color: "white",
-                fontSize: 12,
+                fontSize: 14,
                 fontWeight: "bold",
                 mt: -1,
                 ml: -1
               }}
             >
-              day
+              {day}
             </Avatar>
           </ListItemAvatar>
         </ListItem>

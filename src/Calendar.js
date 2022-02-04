@@ -52,13 +52,22 @@ const divideByDay = (appointments) => {
 
 //TODO:  Each child in a list should have a unique "key" prop.
 
-const Calendar = ({ appointments }) => {
+const Calendar = ({
+  appointments,
+  handleClickOnAppt,
+  handleCancelApptEdit
+}) => {
   console.log(appointments);
   const appointmentsByDay = divideByDay(appointments);
   console.log(appointmentsByDay);
 
   const daysInMonthJSX = appointmentsByDay.map((appointmentsInDay, index) => (
-    <DayInMonth key={index} appointments={appointmentsInDay} />
+    <DayInMonth
+      key={index}
+      appointments={appointmentsInDay}
+      handleClickOnAppt={handleClickOnAppt}
+      handleCancelApptEdit={handleCancelApptEdit}
+    />
   ));
 
   console.log(daysInMonthJSX);
