@@ -22,7 +22,7 @@ const style = {
 
 const ApptModal = React.forwardRef((props, ref) => {
   const { purpose } = props;
-  const title = "Edit Modal";
+  const title = "Edit Appointment";
   const appt_id = useSelector((state) => state.ui.apptToEdit);
   const appt = useSelector((state) => apptsSelector.selectById(state, appt_id));
   console.log(purpose, appt_id, appt);

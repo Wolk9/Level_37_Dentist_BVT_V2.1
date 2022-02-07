@@ -272,7 +272,7 @@ const User = (props) => {
 
     dispatch(setSelected(newSelected));
 
-    // Hereunder is determined wether a modal should appear as Add or as Edit
+    // Here after is determined wether a modal should appear as Add or as Edit
 
     if (newSelected.length === 1) {
       dispatch(setEdit(true));

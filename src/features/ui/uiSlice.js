@@ -41,7 +41,7 @@ export const uiSlice = createSlice({
     setUserModalOpen: (state, action) =>
       void (state.userModalOpen = action.payload),
     setEdit: (state, action) => {
-      return { ...state, apptModalOpen: action.payload };
+      return { ...state, edit: action.payload };
     },
     setApptModalOpen: (state, action) => {
       return { ...state, apptModalOpen: action.payload };
