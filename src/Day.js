@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import { List } from "@mui/material";
 
 const Day = (props) => {
-  const { appointments } = props;
+  const { appointments, handleClickOnAppt } = props;
   console.log(props, appointments, appointments.length);
   return (
     <List
@@ -16,6 +16,10 @@ const Day = (props) => {
         bgcolor: "background.paper",
         color: "deepskyblue"
       }}
+      value={appointments.id}
+      onClick={() =>
+        handleClickOnAppt({ appt_id: appointments.id, type: "singleClick" })
+      }
     >
       {appointments.map((appointment) => {
         return (
