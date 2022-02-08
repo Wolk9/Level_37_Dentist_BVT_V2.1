@@ -26,13 +26,13 @@ export default function UserModal(props) {
   const formValue = useSelector((state) => state.ui.formValue);
   const formError = useSelector((state) => state.ui.formError);
   const modalStyle = {
-    color: "#eee",
+    color: "#ccc",
     position: "absolute",
     top: "400px",
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: 800,
-    bgcolor: "rgba(30, 30, 30, 0.98)",
+    bgcolor: "#333",
     border: "3px solid #ccc",
     borderRadius: "10px",
     boxShadow: 24,
